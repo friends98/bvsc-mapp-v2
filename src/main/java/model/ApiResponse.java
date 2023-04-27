@@ -2,21 +2,21 @@ package model;
 
 public class ApiResponse {
 
-	private String status;
+	private Integer status;
 	private String message;
 	private Object items;
 
-	public ApiResponse(String status, String message, Object items) {
+	public ApiResponse(Integer status, String message, Object items) {
 		this.status = status;
 		this.message = message;
 		this.items = items;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

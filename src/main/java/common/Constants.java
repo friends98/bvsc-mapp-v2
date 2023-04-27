@@ -3,7 +3,7 @@ package common;
 public class Constants {
 
 	//
-	public static final String LOGIN_FAILED = "Login failed!";
+	
 	public static final String SUCCESS = "Success get information record";
 	public static final String ERROR = "Error get information record";
 
@@ -13,6 +13,12 @@ public class Constants {
 	public static final String HTTP_CODE_401 = "401";
 	public static final String HTTP_CODE_403 = "403";
 	public static final String HTTP_CODE_500 = "500";
+	
+	
+	// status response
+	public static final Integer LOGIN_SUCCESS=1;
+	public static final Integer LOGIN_FAILED=2;
+	
 
 	// role authorize number
 	// public static final Integer ADMIN = 1;

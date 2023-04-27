@@ -12,17 +12,9 @@ public class JWTCredential implements Credential{
 		this.principal=principal;
 		this.authorities=authorities;
 	}
-
-	/**
-	 * @return the principal
-	 */
 	public String getPrincipal() {
 		return principal;
 	}
-
-	/**
-	 * @return the authorities
-	 */
 	public Set<String> getAuthorities() {
 		return authorities;
 	}

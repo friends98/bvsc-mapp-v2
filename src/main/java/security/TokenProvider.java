@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import org.apache.log4j.Logger;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
@@ -16,14 +17,14 @@ import io.jsonwebtoken.SignatureException;
 @Stateless
 public class TokenProvider {
 	private static final Logger logger = Logger.getLogger(TokenProvider.class);
-	private static final String KEY_AUTH = "bvsc";
+	//private static final String KEY_AUTH = "bvsc";
 	private String tokenSecret;
 	private long tokenValidity;
 
 	@PostConstruct
 	public void init() {
 		this.tokenSecret = "bvsc";
-		this.tokenValidity = TimeUnit.HOURS.toMillis(2);
+		this.tokenValidity = TimeUnit.MINUTES.toMillis(2);
 	}
 
 	public String generateToken(String username) {
@@ -36,19 +37,27 @@ public class TokenProvider {
 				.compact();
 	}
 	
-	// get username from jwt token 
-	public String getUserNameByJwtToken(String token) {
+	// get user name from jwt token 
+	public String getUserNameFromJwtToken(String token) {
 		Claims claims=Jwts.parser().setSigningKey(tokenSecret).parseClaimsJwt(token).getBody();
 		String userName=claims.getSubject();
 		return userName;
 	}
 	
-	public Date getExpirationByJwtToken(String token) {
+	public Date getExpFromJwtToken(String token) {
 		return Jwts.parser()
 				.setSigningKey(tokenSecret)
 				.parseClaimsJws(token)
 				.getBody()
 				.getExpiration();
+	}
+	public boolean isTokenExpired(String token) {
+		try {
+			Date expiration=getExpFromJwtToken(token);
+			return expiration.before(new Date(System.currentTimeMillis()));
+		} catch (ExpiredJwtException e) {
+			return true;
+		}
 	}
 	
 	

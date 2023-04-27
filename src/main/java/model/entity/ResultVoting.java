@@ -1,7 +1,5 @@
 package model.entity;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Candidate {
+public class ResultVoting {
 	private String id;
-	private String meetingId;
-	private String fullName;
-	private Date birthday;
+	private String idVoting;
+	private String idUser;
+	private Integer status;
 }

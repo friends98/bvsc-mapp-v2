@@ -18,14 +18,6 @@ public class CompanyInfo {
 	private Integer taxCode;
 	private String address;
 	private Date foundYear;
-	/**
-	 * @param id
-	 * @param companyName
-	 * @param stockCode
-	 * @param taxCode
-	 * @param address
-	 * @param foundYear
-	 */
 	
 	
 }

@@ -1,6 +1,6 @@
 package model.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Candidate {
+public class Voting {
 	private String id;
-	private String meetingId;
-	private String fullName;
-	private Date birthday;
+	private String idMeeting;
+	private String content;
+	private Timestamp createdTime;
+	private Timestamp modifiedTime;
 }
