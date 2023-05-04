@@ -8,14 +8,12 @@ import java.util.Optional;
 public interface CommonDao<T> {
 	List<T> getAll();
 
-	Optional<T> get(String id);
+	Optional<T> getById(String id);
 
 	void save(T t);
 
 	void update(T t);
 
 	void delete(T t);
-	
-	
 	
 }
