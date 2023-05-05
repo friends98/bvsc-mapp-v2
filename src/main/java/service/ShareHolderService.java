@@ -16,6 +16,7 @@ import common.Constants;
 import dao.ShareHolderDao;
 import dao.daoimpl.ShareHolderDaoImpl;
 import model.ApiResponse;
+import model.AuthErrorReponse;
 import model.entity.ShareHolderInfo;
 
 @Path("shareholder")
@@ -29,16 +30,22 @@ public class ShareHolderService {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
+	@Path("/{id}")
 	public Response get(@PathParam("id")String id) {
-		shareHolderImpl=new ShareHolderDaoImpl();
-		Optional<ShareHolderInfo> opShareHolderInfo=shareHolderImpl.getById(id);
-		if(!opShareHolderInfo.isPresent()) {
-			logger.info("khong tim thay");
+		logger.info("ID request: "+id);
+		try {
+			shareHolderImpl=new ShareHolderDaoImpl();
+			Optional<ShareHolderInfo> opShareHolderInfo=shareHolderImpl.getById(id);
+			if(!opShareHolderInfo.isPresent()) {
+				logger.info("khong tim thay");
+			}
+			return Response.ok(new ApiResponse(Constants.HTTP_CODE_200,
+					Constants.SUCCESS,
+					opShareHolderInfo.get())).build();
+
+		} catch (NullPointerException e) {
+			return Response.ok(new AuthErrorReponse(Constants.HTTP_CODE_400, Constants.ERROR, null)).build();
 		}
-		return Response.ok(new ApiResponse(Constants.HTTP_CODE_200,
-				Constants.SUCCESS,
-				opShareHolderInfo.get())).build();
 	}
 
 }

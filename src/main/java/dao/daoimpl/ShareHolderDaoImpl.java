@@ -31,31 +31,29 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolderInfo>{
 
 	@Override
 	public Optional<ShareHolderInfo> getById(String id) {
-		StringBuilder sql = new StringBuilder("SELECT * FROM tblShareholder_Info si WHERE si.id=?");
+		StringBuilder sql = new StringBuilder("SELECT * FROM tblShareholder_Info WHERE id=?");
 		PreparedStatement stmt = null;
-		ShareHolderInfo shareHoldersInfo=new ShareHolderInfo();
+		ShareHolderInfo shareHoldersInfo = new ShareHolderInfo();
 		try {
-			logger.info("GET DATA FROM SHAREHOLDER_INFO TABLE");
+			logger.info("GET DATA FROM SHAREHOLDER TABLE");
+			logger.info("SHARE HOLDER INFO ID: "+id);
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
-			logger.info("ID"+id);
-
 			stmt.setString(1, id);
-			ResultSet rs = stmt.executeQuery();
+			ResultSet rs=stmt.executeQuery();
 			while(rs.next()) {
-				shareHoldersInfo.setId(rs.getString("id"));
-				shareHoldersInfo.setFullname(rs.getString("fullname"));
-				shareHoldersInfo.setIdentityCard(rs.getString("identity_card"));
-				shareHoldersInfo.setEmail(rs.getString("email"));
-				shareHoldersInfo.setAddress(rs.getString("address"));
-				shareHoldersInfo.setPhoneNumber(rs.getString("phone_number"));
-				shareHoldersInfo.setNationality(rs.getString("nationality"));
+				shareHoldersInfo.setId(rs.getString(1));
+				shareHoldersInfo.setFullname(rs.getString(2));
+				shareHoldersInfo.setIdentityCard(rs.getString(3));
+				shareHoldersInfo.setEmail(rs.getString(4));
+				shareHoldersInfo.setAddress(rs.getString(5));
+				shareHoldersInfo.setAddress(rs.getString(6));
+				shareHoldersInfo.setNationality(rs.getString(7));
 			}
-			
-		
+
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-		}finally {
+		} finally {
 			try {
 				stmt.close();
 				conn.close();
@@ -63,13 +61,13 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolderInfo>{
 				logger.error(e2.getMessage());
 			}
 		}
-		logger.info("Test"+shareHoldersInfo.getId());
 		return Optional.of(shareHoldersInfo);
 	}
 
 	@Override
-	public void save(ShareHolderInfo t) {
-		// TODO Auto-generated method stub
+	public void save(ShareHolderInfo shareHolderInfo) {
+		StringBuilder sql = new StringBuilder("INSERT INTO tblShareholder_Info (");
+		PreparedStatement stmt = null;
 		
 	}
 

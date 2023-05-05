@@ -2,6 +2,8 @@ package dao.daoimpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,29 +39,37 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 	@Override
 	public void save(Voting voting) {
 		StringBuilder sql = new StringBuilder(
-				"INSERT INTO tblVoting (id,id_meeting,content,created_time,modified_time)" + "VALUES(?,?,?,?,?)");
+				"INSERT INTO tblVoting (id_meeting,content,created_time,modified_time)" + "VALUES(?,?,?,?)");
 		PreparedStatement stmt = null;
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
-			stmt = conn.prepareStatement(sql.toString());
-			stmt.setString(1, voting.getId());
-			stmt.setString(2, voting.getIdMeeting());
-			stmt.setString(3, voting.getContent());
-			stmt.setTimestamp(4, voting.getCreatedTime());
-			stmt.setTimestamp(5, voting.getModifiedTime());
+			stmt = conn.prepareStatement(sql.toString(),Statement.RETURN_GENERATED_KEYS);
+			//stmt.setString(1, voting.getId());
+			stmt.setString(1, voting.getIdMeeting());
+			stmt.setString(2, voting.getContent());
+			stmt.setTimestamp(3, voting.getCreatedTime());
+			stmt.setTimestamp(4, voting.getModifiedTime());
+			stmt.addBatch();
 
 			//execute
-			stmt.executeUpdate();
+			stmt.executeBatch();
+			ResultSet rs=stmt.getGeneratedKeys();
+			logger.info("GENERATE KEY: "+rs.getString(1));
+
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		} finally {
+			
 			try {
+
 				stmt.close();
 				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
 		}
+		
+
 
 	}
 

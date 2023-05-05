@@ -37,14 +37,21 @@ public class VotingService {
 					Constants.REQUEST_INVALID_MESS,
 					new Object())).build();
 		}
-		Voting voting = new Voting(votingReq.getId(),
-				votingReq.getIdMeeting(),
-				votingReq.getContent(),
-				votingReq.getCreatedTime(),
-				votingReq.getModifiedTime());
-		votingImpl.save(voting);
-		return Response.ok(new ApiResponse(StatusCode.INSERT_SUCCESS.getValue(),
-				StatusCode.INSERT_SUCCESS.getDescription(), voting)).build();
+		try {
+			Voting voting = new Voting(votingReq.getId(),
+					votingReq.getIdMeeting(),
+					votingReq.getContent(),
+					votingReq.getCreatedTime(),
+					votingReq.getModifiedTime());
+			votingImpl.save(voting);
+			return Response.ok(new ApiResponse(StatusCode.INSERT_SUCCESS.getValue(),
+					StatusCode.INSERT_SUCCESS.getDescription(), voting)).build();
+
+		} catch (Exception e) {
+			logger.error("ERROR INSERT : "+e.getMessage());
+			return Response.ok(new ApiResponse(StatusCode.INSERT_FAILED.getValue(),
+					StatusCode.INSERT_FAILED.getDescription(), null)).build();
+		}
 	}
 
 }

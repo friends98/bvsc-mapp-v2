@@ -6,7 +6,9 @@ public enum StatusCode {
 	LOGIN_FAILED(2,"Login failed!"),
 	EXPIRED_TIME(2,"Token is expired time"),
 	INSERT_SUCCESS(1,"Insert data successfully"),
-	INSERT_FAILED(2,"Insert data failed")
+	INSERT_FAILED(2,"Insert data failed"),
+	DATA_SUCCESS(1,"Get record data successfully"),
+	DATA_FAILED(2,"Get record data failed!")
 	;
 	
 	
