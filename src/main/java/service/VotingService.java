@@ -1,5 +1,7 @@
 package service;
 
+import java.sql.Timestamp;
+
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -9,7 +11,6 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
-import common.Constants;
 import common.StatusCode;
 import dao.VotingDao;
 import dao.daoimpl.VotingDaoImpl;
@@ -27,30 +28,33 @@ public class VotingService {
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addVoting(VotingRequest votingReq) {
-		logger.info("INSERT DATA TO TABLE VOTING");
+	public Response voting(VotingRequest votingReq) {
 		votingImpl = new VotingDaoImpl();
 		// check request
-		if (votingReq.getId().isBlank() || votingReq.getIdMeeting().isBlank() || votingReq.getContent().isBlank()) {
-			return Response.ok(new ApiResponse(
-					Constants.HTTP_CODE_400, 
-					Constants.REQUEST_INVALID_MESS,
-					new Object())).build();
-		}
 		try {
-			Voting voting = new Voting(votingReq.getId(),
-					votingReq.getIdMeeting(),
-					votingReq.getContent(),
-					votingReq.getCreatedTime(),
-					votingReq.getModifiedTime());
-			votingImpl.save(voting);
-			return Response.ok(new ApiResponse(StatusCode.INSERT_SUCCESS.getValue(),
-					StatusCode.INSERT_SUCCESS.getDescription(), voting)).build();
+			Voting voting = new Voting();
+			voting.setIdMeeting(votingReq.getIdMeeting());
+			voting.setContent(votingReq.getContent());
+			voting.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+					
+			int insert = votingImpl.save(voting);
+			if(insert==0) {
+				return Response.ok(new ApiResponse(
+						StatusCode.INSERT_FAILED.getValue(),
+						StatusCode.INSERT_FAILED.getDescription(),
+						null)).build();
+			}
+			return Response.ok(new ApiResponse(
+					StatusCode.INSERT_SUCCESS.getValue(),
+					StatusCode.INSERT_SUCCESS.getDescription(), 
+					voting)).build();
 
 		} catch (Exception e) {
 			logger.error("ERROR INSERT : "+e.getMessage());
-			return Response.ok(new ApiResponse(StatusCode.INSERT_FAILED.getValue(),
-					StatusCode.INSERT_FAILED.getDescription(), null)).build();
+			return Response.ok(new ApiResponse(
+					StatusCode.INSERT_FAILED.getValue(),
+					StatusCode.INSERT_FAILED.getDescription(),
+					null)).build();
 		}
 	}
 

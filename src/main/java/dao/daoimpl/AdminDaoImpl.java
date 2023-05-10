@@ -7,12 +7,15 @@ import java.util.Optional;
 
 import javax.ejb.Stateless;
 
+import org.apache.log4j.Logger;
+
 import connection.ConnectionUtils;
 import dao.AdminDao;
 import model.entity.Admin;
 
 @Stateless
 public class AdminDaoImpl implements AdminDao<Admin> {
+	private static Logger logger=Logger.getLogger(AdminDaoImpl.class.getName());
 	
 	Connection conn = null;
 
@@ -35,7 +38,14 @@ public class AdminDaoImpl implements AdminDao<Admin> {
 				return Optional.of(admin);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			logger.error("ERROR SELECT DATA: "+e.getMessage());
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.warn(e2.getMessage());
+			}
 		}
 		return Optional.empty();
 	}

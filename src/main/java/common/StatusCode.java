@@ -8,7 +8,11 @@ public enum StatusCode {
 	INSERT_SUCCESS(1,"Insert data successfully"),
 	INSERT_FAILED(2,"Insert data failed"),
 	DATA_SUCCESS(1,"Get record data successfully"),
-	DATA_FAILED(2,"Get record data failed!")
+	DATA_FAILED(2,"Get record data failed!"),
+	UPDATE_SUCCESS(1,"Update record successfully"),
+	UPDATE_FAILED(2,"Update record failed!"),
+	DELETE_SUCCESS(1,"Delete record successfully"),
+	DELETE_FAILED(2,"Delete record failed!")
 	;
 	
 	

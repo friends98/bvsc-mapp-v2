@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import connection.ConnectionUtils;
 import dao.ShareHolderDao;
 import model.entity.ShareHolderInfo;
-import model.entity.UserInfo;
 
 @Stateless
 public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolderInfo>{
@@ -132,8 +131,5 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolderInfo>{
 		}
 		return Optional.empty();
 	}
-	
-
-	
 
 }
