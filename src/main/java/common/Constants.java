@@ -26,7 +26,7 @@ public class Constants {
 	// public static final Integer PRESIDENT = 3;
 
 	//
-	public static final String ADMIN = "ROLE_ADMIN";
-	public static final String SHARE_HOLDERS = "ROLE_SHARE_HOLDER";
-	public static final String PRESIDENT = "ROLE_PRESIDENT";
+	public static final Integer ADMIN = 0;
+	public static final Integer SHARE_HOLDERS = 1;
+	public static final Integer PRESIDENT = 2;
 }

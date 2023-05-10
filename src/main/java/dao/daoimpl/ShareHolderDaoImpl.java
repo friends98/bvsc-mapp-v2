@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import connection.ConnectionUtils;
 import dao.ShareHolderDao;
 import model.entity.ShareHolderInfo;
+import model.entity.UserInfo;
 
 @Stateless
 public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolderInfo>{
@@ -88,6 +89,50 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolderInfo>{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	@Override
+	public Optional<ShareHolderInfo> findByUserNameAndPassword(String username, String password) {
+		StringBuilder sql=new StringBuilder("SELECT * FROM tblShareholder sh WHERE sh.username=? AND sh.password=?");
+		PreparedStatement stmt=null;
+		try {
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, username);
+			stmt.setString(2, password);
+			ResultSet rs=stmt.executeQuery();
+			while(rs.next()) {
+				ShareHolderInfo shareholderInfo = new ShareHolderInfo(
+						rs.getString(1),
+						rs.getString(2),
+						rs.getString(3),
+						rs.getString(4),
+						rs.getString(5),
+						rs.getString(6),
+						rs.getString(7),
+						rs.getString(8),
+						rs.getString(9),
+						rs.getString(10),
+						rs.getInt(11),
+						rs.getInt(12),
+						rs.getInt(13),
+						rs.getInt(14));
+				return Optional.of(shareholderInfo);
+			}
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.warn(e2.getMessage());
+			}
+		}
+		return Optional.empty();
+	}
+	
 
 	
 

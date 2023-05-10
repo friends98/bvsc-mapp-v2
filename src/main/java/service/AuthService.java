@@ -1,6 +1,7 @@
 package service;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -14,10 +15,12 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 import common.StatusCode;
-import dao.AuthDao;
+import dao.AdminDao;
+import dao.ShareHolderDao;
 import model.AuthErrorReponse;
 import model.AuthResponse;
-import model.entity.UserInfo;
+import model.entity.Admin;
+import model.entity.ShareHolderInfo;
 import model.request.LoginRequest;
 import security.TokenProvider;
 
@@ -28,8 +31,14 @@ public class AuthService {
 	@Inject
 	private TokenProvider tokenProvider;
 	
+//	@Inject
+//	private AuthDao<UserInfo> userInfoDao;
+	
+	@Inject 
+	private AdminDao<Admin> adminDao;
+	
 	@Inject
-	private AuthDao<UserInfo> userInfoDao;
+	private ShareHolderDao<ShareHolderInfo> shareholderDao;
 
 
 
@@ -43,15 +52,22 @@ public class AuthService {
 			String username = loginRequest.getUsername();
 			String password = loginRequest.getPassword();
 
-			UserInfo userInfo=userInfoDao.findByUserNameAndPassword(username, password).get();
+			Optional<ShareHolderInfo> opShareholderInfo=shareholderDao.findByUserNameAndPassword(username, password);
+			if(opShareholderInfo.isEmpty()) {
+				return Response.ok(new AuthErrorReponse(
+						StatusCode.LOGIN_FAILED.getValue(),
+						StatusCode.LOGIN_FAILED.getDescription(),
+						new Timestamp(System.currentTimeMillis())))
+						.build();
+			}
 			String jwtToken = tokenProvider.generateToken(username);
 			return Response.ok(
 					new AuthResponse(
+							opShareholderInfo.get().getId(),
 							username, 
 							jwtToken,
-							tokenProvider.getExpFromJwtToken(jwtToken)
-							.getTime(), 
-							userInfo.getRole()))
+							tokenProvider.getExpFromJwtToken(jwtToken).getTime(), 
+							opShareholderInfo.get().getRole()))
 					.build();
 
 		} catch (NullPointerException e) {
@@ -64,6 +80,44 @@ public class AuthService {
 		}
 
 	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("admin/login")
+	public Response adminLogin(LoginRequest loginRequest) {
+		try {
+			String username = loginRequest.getUsername();
+			String password = loginRequest.getPassword();
+			Optional<Admin> opAdmin =adminDao.findByUserNameAndPassword(username, password);
+			if(opAdmin.isEmpty()) {
+				return Response.ok(new AuthErrorReponse(
+						StatusCode.LOGIN_FAILED.getValue(),
+						StatusCode.LOGIN_FAILED.getDescription(),
+						new Timestamp(System.currentTimeMillis())))
+						.build();
+			}
+			String jwtToken = tokenProvider.generateToken(username);
+			return Response.ok(
+					new AuthResponse(
+							opAdmin.get().getId(),
+							username, 
+							jwtToken,
+							tokenProvider.getExpFromJwtToken(jwtToken)
+							.getTime(), 
+							1))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(new AuthErrorReponse(
+					StatusCode.LOGIN_FAILED.getValue(),
+					StatusCode.LOGIN_FAILED.getDescription(),
+					new Timestamp(System.currentTimeMillis())))
+					.build();
+		}
+	}
+	
+	
+	
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
