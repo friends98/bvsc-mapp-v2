@@ -20,7 +20,7 @@ import dao.ShareHolderDao;
 import model.AuthErrorReponse;
 import model.AuthResponse;
 import model.entity.Admin;
-import model.entity.ShareHolderInfo;
+import model.entity.ShareHolder;
 import model.request.LoginRequest;
 import security.TokenProvider;
 
@@ -38,7 +38,7 @@ public class AuthService {
 	private AdminDao<Admin> adminDao;
 	
 	@Inject
-	private ShareHolderDao<ShareHolderInfo> shareholderDao;
+	private ShareHolderDao<ShareHolder> shareholderDao;
 
 
 
@@ -52,7 +52,7 @@ public class AuthService {
 			String username = loginRequest.getUsername();
 			String password = loginRequest.getPassword();
 
-			Optional<ShareHolderInfo> opShareholderInfo=shareholderDao.findByUserNameAndPassword(username, password);
+			Optional<ShareHolder> opShareholderInfo=shareholderDao.findByUserNameAndPassword(username, password);
 			if(opShareholderInfo.isEmpty()) {
 				return Response.ok(new AuthErrorReponse(
 						StatusCode.LOGIN_FAILED.getValue(),

@@ -1,4 +1,4 @@
-package model.request;
+package model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,24 +9,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ShareHolderRequest {
-	//
+public class ShareHolder {
+	private String id;
 	private String fullname;
 	private String identityCard;
 	private String email;
 	private String address;
 	private String phoneNumber;
 	private String nationality;
-	//
 	private String username;
 	private String password;
 	private String idMeeting;
-	//private Integer idShareholder;
-	private Integer status; // status account join meeting
-	private Integer numberShared;
-	private Integer numberAuthShared;
+	private String shareHolderCode;
+	private Integer status;
+	private Integer numberShares;
+	private Integer numberSharesAuth;
 	private Integer role;
-	private String shareHoldeCode;
-	
 
 }

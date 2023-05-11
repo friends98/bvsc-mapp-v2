@@ -80,6 +80,13 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 		} catch (Exception e) {
 			logger.error("ERROR GET DATA BY ID: "+e.getMessage());
 			return Optional.empty();
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
 		}
 	}
 
@@ -121,7 +128,7 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 				"UPDATE tblElection SET idCandidate=?, title=?, description=?, modifiedTime=? WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
-			logger.info("INSERT DATA ELECTION TABLE");
+			logger.info("UPDATE DATA ELECTION TABLE");
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
 			stmt.setString(1, election.getIdCandidate());

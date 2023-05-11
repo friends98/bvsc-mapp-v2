@@ -128,7 +128,7 @@ public class ElectionService {
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response electionDelete(@PathParam("id")String id) {
+	public Response deleteElection(@PathParam("id")String id) {
 		electionDao = new ElectionDaoImpl();
 		try {
 			Election election = new Election();

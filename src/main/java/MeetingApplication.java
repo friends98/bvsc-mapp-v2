@@ -8,6 +8,7 @@ import security.CORSFilter;
 import service.AccountService;
 import service.AuthService;
 import service.ElectionService;
+import service.MeetingService;
 import service.ShareHolderService;
 import service.VotingService;
 @ApplicationPath("api/v1")
@@ -21,6 +22,7 @@ public class MeetingApplication extends Application{
 		setUrl.add(AuthService.class);
 		setUrl.add(CORSFilter.class);
 		setUrl.add(ShareHolderService.class);
+		setUrl.add(MeetingService.class);
 
 		return setUrl;
 	}

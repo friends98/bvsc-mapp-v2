@@ -12,13 +12,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ShareHolderMeeting {
-	private String id;
+public class MeetingInfo {
+	private Integer id;
 	private String idCompany;
+	private String nameMeeting;
 	private Integer numberOrganized;
 	private Date yearOrganized;
 	private Integer status;
-	private String image;
+	private String imageBanner;
 	private Timestamp startTime;
 	private Timestamp endTime;
 	private String address;

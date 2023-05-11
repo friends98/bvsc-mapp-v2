@@ -13,27 +13,67 @@ import org.apache.log4j.Logger;
 
 import connection.ConnectionUtils;
 import dao.ShareHolderDao;
-import model.entity.ShareHolderInfo;
+import model.entity.ShareHolder;
+
 
 @Stateless
-public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolderInfo>{
+public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 	
 	private static final Logger logger = Logger.getLogger(ShareHolderDaoImpl.class.getName());
 
 	Connection conn=null;
-	List<ShareHolderInfo> shareHolderInfo=new ArrayList<>();
-
+	
 	@Override
-	public List<ShareHolderInfo> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ShareHolder> getAll() {
+		
+		List<ShareHolder> shareHolders = new ArrayList<ShareHolder>();
+		PreparedStatement stmt = null;
+		try {
+			logger.info("GET ALL DATA FROM SHAREHOLDER TABLE");
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement("SELECT * FROM tblShareholder");
+			ResultSet rs =stmt.executeQuery();
+
+			while (rs.next()) {
+				ShareHolder shareHolder = new ShareHolder();
+				shareHolder.setId(rs.getString("id"));
+				shareHolder.setFullname(rs.getString("fullname"));
+				shareHolder.setShareHolderCode(rs.getString("shareholderCode"));
+				shareHolder.setIdentityCard(rs.getString("identityCard"));
+				shareHolder.setEmail(rs.getString("email"));
+				shareHolder.setAddress(rs.getString("address"));
+				shareHolder.setPhoneNumber(rs.getString("phoneNumber"));
+				shareHolder.setNationality(rs.getString("nationality"));
+				shareHolder.setUsername(rs.getString("username"));
+				shareHolder.setPassword(rs.getString("password"));
+				shareHolder.setIdMeeting(rs.getString("idMeeting"));
+				shareHolder.setStatus(rs.getInt("status"));
+				shareHolder.setNumberShares(rs.getInt("numberShares"));
+				shareHolder.setNumberSharesAuth(rs.getInt("numberSharesAuth"));
+				shareHolder.setRole(rs.getInt("role"));
+				shareHolders.add(shareHolder);
+			}
+			
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA : "+e.getMessage());
+			
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+			
+		}
+		return shareHolders;
 	}
 
 	@Override
-	public Optional<ShareHolderInfo> getById(String id) {
-		StringBuilder sql = new StringBuilder("SELECT * FROM tblShareholder_Info WHERE id=?");
+	public Optional<ShareHolder> getById(String id) {
+		StringBuilder sql = new StringBuilder("SELECT * FROM tblShareholder WHERE id=?");
 		PreparedStatement stmt = null;
-		ShareHolderInfo shareHoldersInfo = new ShareHolderInfo();
+		ShareHolder shareHolder = new ShareHolder();
 		try {
 			logger.info("GET DATA FROM SHAREHOLDER TABLE");
 			logger.info("SHARE HOLDER INFO ID: "+id);
@@ -42,17 +82,28 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolderInfo>{
 			stmt.setString(1, id);
 			ResultSet rs=stmt.executeQuery();
 			while(rs.next()) {
-				shareHoldersInfo.setId(rs.getString(1));
-				shareHoldersInfo.setFullname(rs.getString(2));
-				shareHoldersInfo.setIdentityCard(rs.getString(3));
-				shareHoldersInfo.setEmail(rs.getString(4));
-				shareHoldersInfo.setAddress(rs.getString(5));
-				shareHoldersInfo.setAddress(rs.getString(6));
-				shareHoldersInfo.setNationality(rs.getString(7));
+				shareHolder.setId(rs.getString("id"));
+				shareHolder.setFullname(rs.getString("fullname"));
+				shareHolder.setIdentityCard(rs.getString("identityCard"));
+				shareHolder.setEmail(rs.getString("email"));
+				shareHolder.setPhoneNumber(rs.getString("phoneNumber"));
+				shareHolder.setAddress(rs.getString("address"));
+				shareHolder.setNationality(rs.getString("nationality"));
+				shareHolder.setUsername(rs.getString("username"));
+				shareHolder.setPassword(rs.getString("password"));
+				shareHolder.setIdMeeting(rs.getString("idMeeting"));
+				shareHolder.setStatus(rs.getInt("status"));
+				shareHolder.setNumberShares(rs.getInt("numberShares"));
+				shareHolder.setNumberSharesAuth(rs.getInt("numberSharesAuth"));
+				shareHolder.setRole(rs.getInt("role"));
+				shareHolder.setShareHolderCode(rs.getString("shareholderCode"));
+				return Optional.of(shareHolder);
 			}
 
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("ERROR GET DATA :"+e.getMessage());
+			return Optional.empty();
+
 		} finally {
 			try {
 				stmt.close();
@@ -61,37 +112,131 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolderInfo>{
 				logger.error(e2.getMessage());
 			}
 		}
-		return Optional.of(shareHoldersInfo);
+		return  Optional.empty();
 	}
 
 	@Override
-	public void save(ShareHolderInfo shareHolderInfo) {
-		StringBuilder sql = new StringBuilder("INSERT INTO tblShareholder_Info (");
+	public Integer save(ShareHolder shareHolder) {
+		StringBuilder sql = new StringBuilder(
+				    "INSERT INTO tblShareholder (fullname,identityCard,email,address,phoneNumber,nationality,username,"
+				  + "password,idMeeting,status,numberShares,numberSharesAuth,role,shareHolderCode) "
+				  + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		PreparedStatement stmt = null;
+		try {
+			conn=ConnectionUtils.getInstance().getConnection();
+			stmt=conn.prepareStatement(sql.toString());
+			stmt.setString(1, shareHolder.getFullname());
+			stmt.setString(2, shareHolder.getIdentityCard());
+			stmt.setString(3, shareHolder.getEmail());
+			stmt.setString(4, shareHolder.getAddress());
+			stmt.setString(5, shareHolder.getPhoneNumber());
+			stmt.setString(6, shareHolder.getNationality());
+			stmt.setString(7, shareHolder.getUsername());
+			stmt.setString(8, shareHolder.getPassword());
+			stmt.setString(9, shareHolder.getIdMeeting());
+			stmt.setInt(10,shareHolder.getStatus());
+			stmt.setInt(11,shareHolder.getNumberShares());
+			stmt.setInt(12,shareHolder.getNumberSharesAuth());
+			stmt.setInt(13, shareHolder.getRole());
+			stmt.setString(14,shareHolder.getShareHolderCode());
+			stmt.addBatch();
+			stmt.executeBatch();
+			return 1;
+			
+		} catch (Exception e) {
+			logger.error("ERROR INSERT DATA : "+e.getMessage());
+			return 0;
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+				return 0;
+			}
+		}
+	}
+
+	@Override
+	public Integer update(ShareHolder shareHolder) {
+		StringBuilder sql = new StringBuilder(""
+				+ "UPDATE tblShareholder SET fullname=?,identityCard=?,email=?,address=?,"
+				+ "phoneNumber=?,nationality=?,username=?,password=?,idMeeting=?,status=?,numberShares=?,"
+				+ "numberSharesAuth=?,role=?,shareHolderCode=? WHERE id=?");
+		PreparedStatement stmt = null;
+		try {
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, shareHolder.getFullname());
+			stmt.setString(2, shareHolder.getIdentityCard());
+			stmt.setString(3, shareHolder.getEmail());
+			stmt.setString(4, shareHolder.getAddress());
+			stmt.setString(5, shareHolder.getPhoneNumber());
+			stmt.setString(6, shareHolder.getNationality());
+			stmt.setString(7, shareHolder.getUsername());
+			stmt.setString(8, shareHolder.getPassword());
+			stmt.setString(9, shareHolder.getIdMeeting());
+			stmt.setInt(10,shareHolder.getStatus());
+			stmt.setInt(11,shareHolder.getNumberShares());
+			stmt.setInt(12,shareHolder.getNumberSharesAuth());
+			stmt.setInt(13, shareHolder.getRole());
+			stmt.setString(14,shareHolder.getShareHolderCode());
+			stmt.setString(15,shareHolder.getId());
+			stmt.addBatch();
+			stmt.executeBatch();
+			return 1;
+		} catch (Exception e) {
+			logger.error("ERROR UPDATE DATA : "+e.getMessage());
+			return 0;
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+				return 0;
+			}
+		}
 		
 	}
 
 	@Override
-	public void update(ShareHolderInfo t) {
-		// TODO Auto-generated method stub
+	public Integer delete(ShareHolder shareHolder) {
+		StringBuilder sql = new StringBuilder("DELETE FROM tblShareholder WHERE id=?");
+		PreparedStatement stmt = null;
+		try {
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, shareHolder.getId());
+			int rowDel=stmt.executeUpdate();
+			if(rowDel>0) {
+				return 1;
+			}
+			return 0;
+		} catch (Exception e) {
+			logger.error("ERROR DELETE DATA BY ID: "+e.getMessage());
+			return 0;
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+				return 0;
+			}
+		}
 		
 	}
 
 	@Override
-	public void delete(ShareHolderInfo t) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public List<ShareHolderInfo> searchByIdentityCard(String identityCard) {
+	public List<ShareHolder> searchByIdentityCard(String identityCard) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	
 	@Override
-	public Optional<ShareHolderInfo> findByUserNameAndPassword(String username, String password) {
+	public Optional<ShareHolder> findByUserNameAndPassword(String username, String password) {
 		StringBuilder sql=new StringBuilder("SELECT * FROM tblShareholder sh WHERE sh.username=? AND sh.password=?");
 		PreparedStatement stmt=null;
 		try {
@@ -101,22 +246,23 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolderInfo>{
 			stmt.setString(2, password);
 			ResultSet rs=stmt.executeQuery();
 			while(rs.next()) {
-				ShareHolderInfo shareholderInfo = new ShareHolderInfo(
-						rs.getString(1),
-						rs.getString(2),
-						rs.getString(3),
-						rs.getString(4),
-						rs.getString(5),
-						rs.getString(6),
-						rs.getString(7),
-						rs.getString(8),
-						rs.getString(9),
-						rs.getString(10),
-						rs.getInt(11),
-						rs.getInt(12),
-						rs.getInt(13),
-						rs.getInt(14));
-				return Optional.of(shareholderInfo);
+				ShareHolder shareholder = new ShareHolder(
+						rs.getString("id"),
+						rs.getString("fullname"),
+						rs.getString("identityCard"),
+						rs.getString("email"),
+						rs.getString("address"),
+						rs.getString("phoneNumber"),
+						rs.getString("nationality"),
+						rs.getString("username"),
+						rs.getString("password"),
+						rs.getString("idMeeting"),
+						rs.getString("shareholderCode"),
+						rs.getInt("status"),
+						rs.getInt("numberShares"),
+						rs.getInt("numberSharesAuth"),
+						rs.getInt("role"));
+				return Optional.of(shareholder);
 			}
 			
 		} catch (Exception e) {
