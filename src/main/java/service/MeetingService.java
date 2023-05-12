@@ -28,11 +28,8 @@ import model.request.MeetingInfoRequest;
 public class MeetingService {
 	private static final Logger logger = Logger.getLogger(MeetingService.class.getName());
 	
-	
-	
 	@Inject 
 	private MeetingDao<MeetingInfo> meetingDaoImpl;
-	
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -63,6 +60,7 @@ public class MeetingService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addMeeting(MeetingInfoRequest meetingInfoReq) {
+		
 		MeetingInfo meetingInfo = new MeetingInfo();
 		meetingInfo.setIdCompany(meetingInfoReq.getIdCompany());
 		meetingInfo.setNameMeeting(meetingInfoReq.getNameMeeting());

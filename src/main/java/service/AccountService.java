@@ -13,8 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
-
 import common.StatusCode;
 import dao.CandidateDao;
 import model.ApiResponse;
@@ -27,7 +25,7 @@ import model.entity.CompanyInfo;
 @Path("")
 public class AccountService {
 	
-	private static final Logger logger = Logger.getLogger(AccountService.class);
+	//private static final Logger logger = Logger.getLogger(AccountService.class);
 	@Inject 
 	private CandidateDao candidateDao;
 
