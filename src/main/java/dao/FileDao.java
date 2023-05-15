@@ -94,25 +94,27 @@ public class FileDao {
 				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		  int batchSize=Constants.BATCH_SIZE;
 		  int count =0;
+		  PreparedStatement stmt=null;
 
 		try {
 			logger.info("UPLOAD EXCEL FILE TO DB");
 			conn = ConnectionUtils.getInstance().getConnection();
 			long start=System.currentTimeMillis();
-			conn.setAutoCommit(false);
-			PreparedStatement stmt=null;
-			
+			conn.setAutoCommit(true);
+
 			int size = list.size();
+			logger.info("Size: "+size);
 			for(int i=0;i<size;i++) {
 				stmt = conn.prepareStatement(sql.toString());
+
 				ShareHolder shareHolder=list.get(i);
 				stmt.setString(1, shareHolder.getFullname());
-				stmt.setString(2, shareHolder.getIdentityCard()+i);
-				stmt.setString(3, shareHolder.getEmail()+i);
+				stmt.setString(2, shareHolder.getIdentityCard());
+				stmt.setString(3, shareHolder.getEmail());
 				stmt.setString(4, shareHolder.getAddress());
-				stmt.setString(5, shareHolder.getPhoneNumber()+i);
+				stmt.setString(5, shareHolder.getPhoneNumber());
 				stmt.setString(6, shareHolder.getNationality());
-				stmt.setString(7, shareHolder.getUsername()+i);
+				stmt.setString(7, shareHolder.getUsername());
 				stmt.setString(8, "xxxxxxx");
 				stmt.setString(9, "bvsc2023");
 				stmt.setInt(10,0);
@@ -129,7 +131,6 @@ public class FileDao {
 					conn.commit();
 				}
 				stmt.executeBatch();
-				
 			}
 			long end = System.currentTimeMillis();
 			logger.info("TIME INSERT TO DB: " + (end - start));
@@ -140,7 +141,10 @@ public class FileDao {
 			return 0;
 		}finally {
 			try {
+				stmt.close();
 				conn.close();
+
+
 			} catch (Exception e2) {
 				logger.info(e2.getMessage());
 			}

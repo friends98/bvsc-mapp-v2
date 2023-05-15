@@ -1,6 +1,4 @@
-package model.entity;
-
-import java.sql.Timestamp;
+package model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,15 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Session {
-	private String sessionId;
+public class SessionRequest {
 	private String idShareholder;
-	private Timestamp startTime;
-	private Timestamp endTime;
-	//private Time duration;
 	private String ipAddress;
 	//private String browser;
 	private String deviceType;
-	//private String location;
 
 }

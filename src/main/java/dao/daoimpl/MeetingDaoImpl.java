@@ -167,4 +167,32 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 		return Optional.empty();
 	}
 
+	@Override
+	public Integer getStatusByIdMeeting(Integer idMeeting) {
+		StringBuilder sql = new StringBuilder("SELECT status FROM tblMeeting WHERE id=? ");
+		PreparedStatement stmt = null;
+		Integer status=-1 ;
+		try {
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setInt(1, idMeeting);
+			//stmt.executeQuery();
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				status = rs.getInt("status");
+			}
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA BY ID: "+e.getMessage());
+			return -1;
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+		}
+		return status;
+	}
+
 }

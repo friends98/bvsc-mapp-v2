@@ -35,5 +35,5 @@ public class Constants {
 	public static final Integer MEETTING_RUN=1;
 	public static final Integer MEETTING_END=2;
 	
-	public static final Integer BATCH_SIZE=20000;
+	public static final Integer BATCH_SIZE=30000;
 }

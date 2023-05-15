@@ -3,6 +3,7 @@ package service;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -32,7 +33,9 @@ public class FileService {
 		try {
 			String file ="C:/Users/it-admin/Downloads/bvsc.xlsx";
 			List<ShareHolder> shareholders =fileUtils.readExcelFile(file);
+			long start =System.currentTimeMillis();
 			int upload=fileDao.upload(shareholders);
+			logger.info("Time out: "+(System.currentTimeMillis()-start));
 			if(upload==0) {
 				return Response.ok(new ApiResponse(
 						StatusCode.UPLOAD_FAILED.getValue(),
@@ -49,40 +52,16 @@ public class FileService {
 					StatusCode.UPLOAD_FAILED.getDescription(), null)).build();
 		}
 	}
-
 	
-//	@POST
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Path("upload")
-//	public Response upload(ShareHolderRequest shareholderRequest) {
-//		try {
-//			ShareHolder shareholder = new ShareHolder();
-//			shareholder.setFullname(shareholderRequest.getFullname());
-//			shareholder.setIdentityCard(shareholderRequest.getIdentityCard());
-//			shareholder.setEmail(shareholderRequest.getEmail());
-//			shareholder.setAddress(shareholderRequest.getAddress());
-//			shareholder.setPhoneNumber(shareholderRequest.getPhoneNumber());
-//			shareholder.setUsername(shareholderRequest.getUsername());
-//			shareholder.setPassword(shareholderRequest.getPassword());
-//			shareholder.setNationality(shareholderRequest.getNationality());
-//			shareholder.setIdMeeting(shareholderRequest.getIdMeeting());
-//			shareholder.setStatus(shareholderRequest.getStatus());
-//			shareholder.setNumberShares(shareholderRequest.getNumberShared());
-//			shareholder.setNumberSharesAuth(shareholderRequest.getNumberAuthShared());
-//			shareholder.setRole(shareholderRequest.getRole());
-//			shareholder.setShareHolderCode(shareholderRequest.getShareHoldeCode());
-//			fileDao.uploadFile(shareholder);
-//			return Response.ok(new ApiResponse(
-//					StatusCode.INSERT_SUCCESS.getValue(),
-//					StatusCode.INSERT_SUCCESS.getDescription(), 
-//					shareholder)).build();
-//		} catch (Exception e) {
-//			logger.error("ERROR INSERT : "+e.getMessage());
-//			return Response.ok(new ApiResponse(
-//					StatusCode.INSERT_FAILED.getValue(),
-//					StatusCode.INSERT_FAILED.getDescription(),
-//					null)).build();
-//		}
-//	}
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("upload-img")
+	public Response uploadImage() {
+		String file ="C:/Users/it-admin/Pictures/oto.jpg";
+		String image =fileUtils.uploadImage(file);
+		return Response.ok(new ApiResponse(
+				StatusCode.UPLOAD_SUCCESS.getValue(),
+				StatusCode.UPLOAD_SUCCESS.getDescription(), image)).build();
+	}
 
 }

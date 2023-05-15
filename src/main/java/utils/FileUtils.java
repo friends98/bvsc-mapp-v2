@@ -2,7 +2,11 @@ package utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,6 +26,7 @@ public class FileUtils {
 	
 	
 	public  List<ShareHolder> readExcelFile(String filePath){
+		long start=System.currentTimeMillis();
 		
 		File fileExcel = new File(filePath);
 		List<ShareHolder> listData =new ArrayList<>();
@@ -85,11 +90,26 @@ public class FileUtils {
 				listData.add(shareholder);
 				rowNumber++;
 			}
+			long end =System.currentTimeMillis();
 			fis.close();
+			logger.info("Time : "+(end-start));
 		} catch (Exception e) {
 			logger.error("ERROR READ FILE EXCEL : "+e.getMessage());
 		}
 		return listData;
 	}
+	
+	public String uploadImage(String filePath) {
+		try {
+			byte[] fileContent = org.apache.commons.io.FileUtils.readFileToByteArray(new File(filePath));
+			String encodedString = Base64.getEncoder().encodeToString(fileContent);
+			return encodedString;
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 
 }
