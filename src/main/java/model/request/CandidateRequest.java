@@ -1,8 +1,4 @@
-package model.entity;
-
-
-
-import java.sql.Date;
+package model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,11 +9,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Candidate {
-	private Integer id;
+public class CandidateRequest {
 	private String idElection;
-	private String fullName;
-	private Date birthday;
+	private String fullname;
+	private String birthDay;
 	private String address;
 	private String summaryInfo;
+	
+
 }

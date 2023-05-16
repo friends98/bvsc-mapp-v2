@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ElectionRequest {
-	private String idCandidate;
+	private Integer idMeeting;
 	private String title;
 	private String description;
 

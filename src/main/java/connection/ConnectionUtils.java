@@ -30,7 +30,7 @@ public class ConnectionUtils {
 	private static final Logger logger = Logger.getLogger(ConnectionUtils.class);
 	private static final String serverName = "localhost";
 	private static final String portNumber = "1433";
-	private static final String databaseName = "BVSC_App_Voting";
+	private static final String databaseName = "BVSC_App_Voting1";
 	private static final String username = "sa";
 	private static final String password = "123456";
 

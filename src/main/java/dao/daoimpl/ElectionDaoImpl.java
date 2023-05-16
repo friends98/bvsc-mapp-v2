@@ -33,12 +33,12 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				Election election = new Election();
-				election.setId(rs.getString(1));
-				election.setIdCandidate(rs.getString(2));
-				election.setTitle(rs.getString(3));
-				election.setDescription(rs.getString(4));
-				election.setCreateTime(rs.getTimestamp(5));
-				election.setModifiTime(rs.getTimestamp(6));
+				election.setId(rs.getString("id"));
+				election.setIdMeeting(rs.getInt("idMeeting"));
+				election.setTitle(rs.getString("title"));
+				election.setDescription(rs.getString("description"));
+				election.setCreateTime(rs.getTimestamp("createdTime"));
+				election.setModifiTime(rs.getTimestamp("modifiedTime"));
 				elections.add(election);
 			}
 			
@@ -67,12 +67,12 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 			stmt.setString(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
-				election.setId(rs.getString(1));
-				election.setIdCandidate(rs.getString(2));
-				election.setTitle(rs.getString(3));
-				election.setDescription(rs.getString(4));
-				election.setCreateTime(rs.getTimestamp(5));
-				election.setModifiTime(rs.getTimestamp(6));
+				election.setId(rs.getString("id"));
+				election.setIdMeeting(rs.getInt("idMeeting"));
+				election.setTitle(rs.getString("title"));
+				election.setDescription(rs.getString("description"));
+				election.setCreateTime(rs.getTimestamp("createdTime"));
+				election.setModifiTime(rs.getTimestamp("modifiedTime"));
 				return Optional.of(election);
 
 			}
@@ -93,13 +93,13 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 	@Override
 	public Integer save(Election election) {
 		StringBuilder sql = new StringBuilder(
-				"INSERT INTO tblElection (idCandidate,title,description,createdTime)" 
+				"INSERT INTO tblElection (idMeeting,title,description,createdTime)" 
 			  + "VALUES(?,?,?,?)");
 		PreparedStatement stmt = null;
 		try {
 			conn=ConnectionUtils.getInstance().getConnection();
 			stmt=conn.prepareStatement(sql.toString());
-			stmt.setString(1, election.getIdCandidate());
+			stmt.setInt(1, election.getIdMeeting());
 			stmt.setString(2, election.getTitle());
 			stmt.setString(3, election.getDescription());
 			stmt.setTimestamp(4, election.getCreateTime());
@@ -125,19 +125,18 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 	@Override
 	public Integer update(Election election) {
 		StringBuilder sql = new StringBuilder(
-				"UPDATE tblElection SET idCandidate=?, title=?, description=?, modifiedTime=? WHERE id=?");
+				"UPDATE tblElection SET idMeeting=?, title=?, description=?, modifiedTime=? WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
 			logger.info("UPDATE DATA ELECTION TABLE");
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
-			stmt.setString(1, election.getIdCandidate());
+			stmt.setInt(1, election.getIdMeeting());
 			stmt.setString(2, election.getTitle());
 			stmt.setString(3, election.getDescription());
 			stmt.setTimestamp(4, election.getModifiTime());
 			stmt.setString(5, election.getId());
-			stmt.addBatch();
-			stmt.executeBatch();
+			stmt.executeUpdate();
 			return 1;
 			
 		} catch (Exception e) {

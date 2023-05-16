@@ -12,6 +12,6 @@ import lombok.Setter;
 public class ResultVoting {
 	private String id;
 	private String idVoting;
-	private String idUser;
+	private String idShareholder;
 	private Integer status;
 }

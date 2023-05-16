@@ -32,7 +32,7 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 			while(rs.next()) {
 				Candidate candidate = new Candidate();
 				candidate.setId(rs.getInt("id"));
-				candidate.setIdMeeting(rs.getString("idMeeting"));
+				candidate.setIdElection(rs.getString("idElection"));
 				candidate.setFullName(rs.getString("fullname"));
 				candidate.setBirthday(rs.getDate("birthday"));
 				candidate.setAddress(rs.getString("address"));
@@ -66,7 +66,7 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				candidate.setId(rs.getInt("id"));
-				candidate.setIdMeeting(rs.getString("idMeeting"));
+				candidate.setIdElection(rs.getString("idElection"));
 				candidate.setFullName(rs.getString("fullname"));
 				candidate.setBirthday(rs.getDate("birthday"));
 				candidate.setAddress(rs.getString("address"));
@@ -96,7 +96,7 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 		try {
 			conn=ConnectionUtils.getInstance().getConnection();
 			stmt=conn.prepareStatement(sql.toString());
-			stmt.setString(1, t.getIdMeeting());
+			stmt.setString(1, t.getIdElection());
 			stmt.setString(2, t.getFullName());
 			stmt.setDate(3, t.getBirthday());
 			stmt.setString(4, t.getAddress());
@@ -128,7 +128,7 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 			logger.info("UPDATE DATA CANDIDATE TABLE");
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
-			stmt.setString(1, candidate.getIdMeeting());
+			stmt.setString(1, candidate.getIdElection());
 			stmt.setString(2, candidate.getFullName());
 			stmt.setDate(3, candidate.getBirthday());
 			stmt.setString(4, candidate.getAddress());
@@ -177,6 +177,41 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 				return 0;
 			}
 		}
+	}
+
+	@Override
+	public List<Candidate> findAllCandidateByIdMeeting(String idMeeting) {
+		List<Candidate> candidates = new ArrayList<>();
+		StringBuilder sql = new StringBuilder("SELECT * FROM tblCandidate WHERE idElection=?");
+		PreparedStatement stmt = null;
+		try {
+			logger.info("GET DATA TABLE CANDIDATE");
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, idMeeting);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				Candidate candidate = new Candidate();
+				candidate.setId(rs.getInt("id"));
+				candidate.setIdElection("idElection");
+				candidate.setFullName(rs.getString("fullname"));
+				candidate.setBirthday(rs.getDate("birthday"));
+				candidate.setAddress(rs.getString("address"));
+				candidate.setSummaryInfo(rs.getString("summaryInfo"));
+				candidates.add(candidate);
+				
+			}
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA : "+e.getMessage());
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+		}
+		return candidates;
 	}
 
 }

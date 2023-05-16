@@ -70,6 +70,7 @@ public class VotingService {
 		votingImpl = new VotingDaoImpl();
 		try {
 			Voting voting = new Voting();
+			voting.setId(id);
 			voting.setIdMeeting(votingReq.getIdMeeting());
 			voting.setContent(votingReq.getContent());
 			voting.setModifiedTime(new Timestamp(System.currentTimeMillis()));

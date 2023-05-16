@@ -35,11 +35,11 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 			ResultSet rs=stmt.executeQuery();
 			while(rs.next()) {
 				Voting voting = new Voting(
-						rs.getString(1),
-						rs.getString(2),
-						rs.getString(3),
-						rs.getTimestamp(4),
-						rs.getTimestamp(5));
+						rs.getString("id"),
+						rs.getInt("idMeeting"),
+						rs.getString("content"),
+						rs.getTimestamp("createdTime"),
+						rs.getTimestamp("modifiedTime"));
 				votings.add(voting);
 			}
 		} catch (Exception e) {
@@ -66,11 +66,11 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 			stmt.setString(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()){
-				voting.setId(rs.getString(1));
-				voting.setIdMeeting(id);
-				voting.setContent(rs.getString(3));
-				voting.setCreatedTime(rs.getTimestamp(4));
-				voting.setModifiedTime(rs.getTimestamp(5));
+				voting.setId(rs.getString("id"));
+				voting.setIdMeeting(rs.getInt("idMeeting"));
+				voting.setContent(rs.getString("content"));
+				voting.setCreatedTime(rs.getTimestamp("createdTime"));
+				voting.setModifiedTime(rs.getTimestamp("modifiedTime"));
 				return Optional.of(voting);
 			}
 			return Optional.empty();
@@ -97,7 +97,7 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
 			//stmt.setString(1, voting.getId());
-			stmt.setString(1, voting.getIdMeeting());
+			stmt.setInt(1, voting.getIdMeeting());
 			stmt.setString(2, voting.getContent());
 			stmt.setTimestamp(3, voting.getCreatedTime());
 			stmt.addBatch();
@@ -124,15 +124,15 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 				"UPDATE tblVoting SET content=?, modifiedTime=? WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
-			logger.info("INSERT DATA VOTING TABLE");
+			logger.info("UUPDATE DATA VOTING TABLE");
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
 			
 			stmt.setString(1, voting.getContent());
 			stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
 			stmt.setString(3, voting.getId());
-			stmt.addBatch();
-			stmt.executeBatch();
+			
+			stmt.executeUpdate();
 			return 1;
 
 		} catch (Exception e) {
@@ -152,7 +152,7 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 	@Override
 	public Integer delete(Voting voting) {
 		StringBuilder sql = new StringBuilder(
-				"DELETE FROM tblVoting v WHERE v.id=?");
+				"DELETE FROM tblVoting WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();

@@ -20,7 +20,7 @@ public class ShareHolderRequest {
 	//
 	private String username;
 	private String password;
-	private String idMeeting;
+	private Integer idMeeting;
 	//private Integer idShareholder;
 	private Integer status; // status account join meeting
 	private Integer numberShared;

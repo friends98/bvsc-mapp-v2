@@ -46,7 +46,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 				shareHolder.setNationality(rs.getString("nationality"));
 				shareHolder.setUsername(rs.getString("username"));
 				shareHolder.setPassword(rs.getString("password"));
-				shareHolder.setIdMeeting(rs.getString("idMeeting"));
+				shareHolder.setIdMeeting(rs.getInt("idMeeting"));
 				shareHolder.setStatus(rs.getInt("status"));
 				shareHolder.setNumberShares(rs.getInt("numberShares"));
 				shareHolder.setNumberSharesAuth(rs.getInt("numberSharesAuth"));
@@ -91,7 +91,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 				shareHolder.setNationality(rs.getString("nationality"));
 				shareHolder.setUsername(rs.getString("username"));
 				shareHolder.setPassword(rs.getString("password"));
-				shareHolder.setIdMeeting(rs.getString("idMeeting"));
+				shareHolder.setIdMeeting(rs.getInt("idMeeting"));
 				shareHolder.setStatus(rs.getInt("status"));
 				shareHolder.setNumberShares(rs.getInt("numberShares"));
 				shareHolder.setNumberSharesAuth(rs.getInt("numberSharesAuth"));
@@ -133,7 +133,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 			stmt.setString(6, shareHolder.getNationality());
 			stmt.setString(7, shareHolder.getUsername());
 			stmt.setString(8, shareHolder.getPassword());
-			stmt.setString(9, shareHolder.getIdMeeting());
+			stmt.setInt(9, shareHolder.getIdMeeting());
 			stmt.setInt(10,shareHolder.getStatus());
 			stmt.setInt(11,shareHolder.getNumberShares());
 			stmt.setInt(12,shareHolder.getNumberSharesAuth());
@@ -175,7 +175,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 			stmt.setString(6, shareHolder.getNationality());
 			stmt.setString(7, shareHolder.getUsername());
 			stmt.setString(8, shareHolder.getPassword());
-			stmt.setString(9, shareHolder.getIdMeeting());
+			stmt.setInt(9, shareHolder.getIdMeeting());
 			stmt.setInt(10,shareHolder.getStatus());
 			stmt.setInt(11,shareHolder.getNumberShares());
 			stmt.setInt(12,shareHolder.getNumberSharesAuth());
@@ -256,7 +256,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 						rs.getString("nationality"),
 						rs.getString("username"),
 						rs.getString("password"),
-						rs.getString("idMeeting"),
+						rs.getInt("idMeeting"),
 						rs.getString("shareholderCode"),
 						rs.getInt("status"),
 						rs.getInt("numberShares"),

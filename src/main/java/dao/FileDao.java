@@ -37,7 +37,7 @@ public class FileDao {
 			logger.info("UPLOAD EXCEL FILE TO DB");
 			conn = ConnectionUtils.getInstance().getConnection();
 			long start=System.currentTimeMillis();
-			conn.setAutoCommit(false);
+			conn.setAutoCommit(true);
 			PreparedStatement stmt=null;
 			for(int i=0;i<20000;i++) {
 				stmt = conn.prepareStatement(sql.toString());
@@ -49,7 +49,7 @@ public class FileDao {
 				stmt.setString(6, shareHolder.getNationality());
 				stmt.setString(7, shareHolder.getUsername()+i);
 				stmt.setString(8, shareHolder.getPassword());
-				stmt.setString(9, shareHolder.getIdMeeting());
+				stmt.setInt(9, 1);
 				stmt.setInt(10,shareHolder.getStatus());
 				stmt.setInt(11,shareHolder.getNumberShares());
 				stmt.setInt(12,shareHolder.getNumberSharesAuth());
@@ -63,8 +63,9 @@ public class FileDao {
 					logger.info("Number rows: "+result.length);
 					conn.commit();
 				}
-				stmt.executeBatch();
 			}
+			stmt.executeBatch();
+
 			logger.info("TEST OK");
 			long end = System.currentTimeMillis();
 			logger.info("TIME INSERT TO DB: " + (end - start));
@@ -116,7 +117,7 @@ public class FileDao {
 				stmt.setString(6, shareHolder.getNationality());
 				stmt.setString(7, shareHolder.getUsername());
 				stmt.setString(8, "xxxxxxx");
-				stmt.setString(9, "bvsc2023");
+				stmt.setInt(9, 1);
 				stmt.setInt(10,0);
 				stmt.setInt(11,shareHolder.getNumberShares());
 				stmt.setInt(12,shareHolder.getNumberSharesAuth());
@@ -132,6 +133,7 @@ public class FileDao {
 				}
 				stmt.executeBatch();
 			}
+
 			long end = System.currentTimeMillis();
 			logger.info("TIME INSERT TO DB: " + (end - start));
 			return 1;

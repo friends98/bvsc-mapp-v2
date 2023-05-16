@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class Election {
 	private String id;
-	private String idCandidate;
+	private Integer idMeeting;
 	private String title;
 	private String description;
 	private Timestamp createTime;

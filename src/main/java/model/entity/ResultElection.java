@@ -15,7 +15,7 @@ import lombok.Setter;
 public class ResultElection {
 	private String id;
 	private String idElection;
-	private String idUser;
+	private String idShareholder;
 	private Integer numberShareCandidate;
 	private Timestamp timeElection;
 }

@@ -19,7 +19,7 @@ public class ShareHolder {
 	private String nationality;
 	private String username;
 	private String password;
-	private String idMeeting;
+	private Integer idMeeting;
 	private String shareHolderCode;
 	private Integer status;
 	private Integer numberShares;

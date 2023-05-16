@@ -38,7 +38,7 @@ public class ElectionService {
 	public Response election(ElectionRequest electionReq) {
 		electionDao = new ElectionDaoImpl();
 		Election election = new Election();
-		election.setIdCandidate(electionReq.getIdCandidate());
+		election.setIdMeeting(electionReq.getIdMeeting());
 		election.setTitle(electionReq.getTitle());
 		election.setDescription(electionReq.getDescription());
 		election.setCreateTime(new Timestamp(System.currentTimeMillis()));
@@ -73,7 +73,7 @@ public class ElectionService {
 		electionDao = new ElectionDaoImpl();
 		Election election = new Election();
 		election.setId(id);
-		election.setIdCandidate(electionReq.getIdCandidate());
+		election.setIdMeeting(electionReq.getIdMeeting());
 		election.setTitle(electionReq.getTitle());
 		election.setDescription(electionReq.getDescription());
 		election.setModifiTime(new Timestamp(System.currentTimeMillis()));

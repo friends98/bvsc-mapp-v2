@@ -7,8 +7,10 @@ import javax.ws.rs.core.Application;
 import security.CORSFilter;
 import service.AccountService;
 import service.AuthService;
+import service.CandidateService;
 import service.ElectionService;
 import service.FileService;
+import service.MeetingResultService;
 import service.MeetingService;
 import service.SessionService;
 import service.ShareHolderService;
@@ -26,9 +28,9 @@ public class MeetingApplication extends Application{
 		setUrl.add(MeetingService.class);
 		setUrl.add(FileService.class);
 		setUrl.add(SessionService.class);
+		setUrl.add(MeetingResultService.class);
+		setUrl.add(CandidateService.class);
 		setUrl.add(CORSFilter.class);
-
-
 		return setUrl;
 	}
 }
