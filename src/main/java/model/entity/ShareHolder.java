@@ -12,6 +12,7 @@ import lombok.Setter;
 public class ShareHolder {
 	private String id;
 	private String fullname;
+	private String shareHolderCode;
 	private String identityCard;
 	private String email;
 	private String address;
@@ -19,8 +20,7 @@ public class ShareHolder {
 	private String nationality;
 	private String username;
 	private String password;
-	private String idMeeting;
-	private String shareHolderCode;
+	private Integer idMeeting;
 	private Integer status;
 	private Integer numberShares;
 	private Integer numberSharesAuth;

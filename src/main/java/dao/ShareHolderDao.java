@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface ShareHolderDao<T> extends CommonDaoUpdate<T>,AuthDao<T> {
 
-	public List<T> searchByIdentityCard(String identityCard);
+	public List<T> getByIdMeeting(String idMeeting);
 
 	Optional<T> findByUserNameAndPassword(String username, String password);
 

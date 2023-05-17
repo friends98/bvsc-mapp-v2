@@ -32,7 +32,7 @@ public class AdminDaoImpl implements AdminDao<Admin> {
 			while(rs.next()) {
 				Admin admin =new Admin(
 						rs.getString(1),
-						rs.getString(2),
+						rs.getInt(2),
 						rs.getString(3),
 						"xxxxxxxxxxx");
 				return Optional.of(admin);

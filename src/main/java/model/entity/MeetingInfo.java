@@ -1,7 +1,6 @@
 package model.entity;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,13 +13,13 @@ import lombok.Setter;
 @Setter
 public class MeetingInfo {
 	private Integer id;
-	private String idCompany;
+	private Integer idCompany;
 	private String nameMeeting;
 	private Integer numberOrganized;
 	private Date yearOrganized;
 	private Integer status;
 	private String imageBanner;
-	private Timestamp startTime;
-	private Timestamp endTime;
+	private Date startTime;
+	private Date endTime;
 	private String address;
 }

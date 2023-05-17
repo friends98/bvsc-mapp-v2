@@ -9,7 +9,7 @@ import javax.ejb.Stateless;
 import org.apache.log4j.Logger;
 
 import connection.ConnectionUtils;
-import model.entity.ShareHolderInfo;
+import model.entity.ShareHolder;
 
 
 
@@ -20,7 +20,7 @@ public class FileDao {
 	
 	Connection conn = null;
 	@SuppressWarnings("resource")
-	public void uploadFile(ShareHolderInfo shareHolderInfo) throws SQLException {
+	public void uploadFile(ShareHolder shareHolderInfo) throws SQLException {
 		
 		StringBuilder sql = new StringBuilder(
 				  "INSERT INTO tblShareholder "
@@ -45,7 +45,7 @@ public class FileDao {
 				stmt.setString(6, shareHolderInfo.getNationality());
 				stmt.setString(7, shareHolderInfo.getUsername()+i);
 				stmt.setString(8, shareHolderInfo.getPassword());
-				stmt.setString(9, shareHolderInfo.getIdMeeting());
+				stmt.setInt(9, shareHolderInfo.getIdMeeting());
 				stmt.setInt(10, shareHolderInfo.getStatus());
 				stmt.setInt(11, shareHolderInfo.getNumberShares());
 				stmt.setInt(12, shareHolderInfo.getNumberSharesAuth());

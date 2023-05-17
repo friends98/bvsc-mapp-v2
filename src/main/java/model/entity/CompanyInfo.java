@@ -1,6 +1,7 @@
 package model.entity;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CompanyInfo {
-	private String id;
+	private Integer id;
 	private String companyName;
 	private String stockCode;
 	private Integer taxCode;

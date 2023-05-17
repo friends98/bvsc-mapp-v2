@@ -3,7 +3,6 @@ package dao.daoimpl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,10 +35,10 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 			while(rs.next()) {
 				Voting voting = new Voting(
 						rs.getString(1),
-						rs.getString(2),
+						rs.getInt(2),
 						rs.getString(3),
-						rs.getTimestamp(4),
-						rs.getTimestamp(5));
+						rs.getDate(4),
+						rs.getDate(5));
 				votings.add(voting);
 			}
 		} catch (Exception e) {
@@ -57,23 +56,23 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 
 	@Override
 	public Optional<Voting> getById(String id) {
-		StringBuilder sql = new StringBuilder("SELECT * FROM tblVoting v WHERE v.id=?");
+		StringBuilder sql = new StringBuilder("SELECT * FROM tblVoting WHERE id = ?");
 		PreparedStatement stmt = null;
-		Voting voting =new Voting();
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
 			stmt.setString(1, id);
+			//stmt.executeQuery();
 			ResultSet rs = stmt.executeQuery();
-			while(rs.next()){
-				voting.setId(rs.getString(1));
-				voting.setIdMeeting(id);
-				voting.setContent(rs.getString(3));
-				voting.setCreatedTime(rs.getTimestamp(4));
-				voting.setModifiedTime(rs.getTimestamp(5));
+			while(rs.next()) {
+				Voting voting = new Voting();
+				voting.setId(rs.getString("id"));
+				voting.setIdMeeting(rs.getInt("idMeeting"));
+				voting.setContent(rs.getString("content"));
+				voting.setCreatedTime(rs.getDate("createdTime"));
+				voting.setModifiedTime(rs.getDate("modifiedTime"));
 				return Optional.of(voting);
 			}
-			return Optional.empty();
 		} catch (Exception e) {
 			logger.error("ERROR GET DATA BY ID: "+e.getMessage());
 			return Optional.empty();
@@ -84,7 +83,8 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
-		}
+		}				
+		return Optional.empty();
 	}
 
 	@Override
@@ -97,9 +97,9 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
 			//stmt.setString(1, voting.getId());
-			stmt.setString(1, voting.getIdMeeting());
+			stmt.setInt(1, voting.getIdMeeting());
 			stmt.setString(2, voting.getContent());
-			stmt.setTimestamp(3, voting.getCreatedTime());
+			stmt.setDate(3, voting.getCreatedTime());
 			stmt.addBatch();
 			stmt.executeBatch();
 			return 1;
@@ -120,25 +120,24 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 
 	@Override
 	public Integer update(Voting voting) {
-		StringBuilder sql = new StringBuilder(
-				"UPDATE tblVoting SET content=?, modifiedTime=? WHERE id=?");
+		StringBuilder sql = new StringBuilder("UPDATE tblVoting SET idMeeting=?, content=?,createdTime=?, modifiedTime=? WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
-			logger.info("INSERT DATA VOTING TABLE");
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
+			stmt.setInt(1, voting.getIdMeeting());
+			stmt.setString(2, voting.getContent());
+			stmt.setDate(3,voting.getCreatedTime());
+			stmt.setDate(4,voting.getModifiedTime());
+			stmt.setString(5,voting.getId());
 			
-			stmt.setString(1, voting.getContent());
-			stmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-			stmt.setString(3, voting.getId());
 			stmt.addBatch();
 			stmt.executeBatch();
 			return 1;
-
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("ERROR UPDATE DATA : "+e.getMessage());
 			return 0;
-		} finally {
+		}finally {
 			try {
 				stmt.close();
 				conn.close();
@@ -152,7 +151,7 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 	@Override
 	public Integer delete(Voting voting) {
 		StringBuilder sql = new StringBuilder(
-				"DELETE FROM tblVoting v WHERE v.id=?");
+				"DELETE FROM tblVoting WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
@@ -178,4 +177,39 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 		}
 	}
 
+	@Override
+	public List<Voting> getByIdMeeting(String idMeeting) {
+		List<Voting> votings = new ArrayList<Voting>();
+		StringBuilder sql = new StringBuilder("SELECT * FROM tblVoting WHERE idMeeting=? ORDER BY content ASC");
+		PreparedStatement stmt = null;
+		try {
+			logger.info("GET DATA FROM Voting TABLE");
+			logger.info("Voting INFO ID: "+idMeeting);
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, idMeeting);
+			ResultSet rs=stmt.executeQuery();
+			while (rs.next()) {
+				Voting voting = new Voting();
+				voting.setId(rs.getString("id"));
+				voting.setIdMeeting(rs.getInt("idMeeting"));
+				voting.setContent(rs.getString("content"));
+				voting.setCreatedTime(rs.getDate("createdTime"));
+				voting.setModifiedTime(rs.getDate("modifiedTime"));
+				votings.add(voting);
+			}
+
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA :"+e.getMessage());
+
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+		}
+		return  votings;
+	}
 }

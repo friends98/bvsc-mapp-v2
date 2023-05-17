@@ -38,7 +38,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 				ShareHolder shareHolder = new ShareHolder();
 				shareHolder.setId(rs.getString("id"));
 				shareHolder.setFullname(rs.getString("fullname"));
-				shareHolder.setShareHolderCode(rs.getString("shareholderCode"));
+				shareHolder.setShareHolderCode(rs.getString("shareHolderCode"));
 				shareHolder.setIdentityCard(rs.getString("identityCard"));
 				shareHolder.setEmail(rs.getString("email"));
 				shareHolder.setAddress(rs.getString("address"));
@@ -46,7 +46,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 				shareHolder.setNationality(rs.getString("nationality"));
 				shareHolder.setUsername(rs.getString("username"));
 				shareHolder.setPassword(rs.getString("password"));
-				shareHolder.setIdMeeting(rs.getString("idMeeting"));
+				shareHolder.setIdMeeting(rs.getInt("idMeeting"));
 				shareHolder.setStatus(rs.getInt("status"));
 				shareHolder.setNumberShares(rs.getInt("numberShares"));
 				shareHolder.setNumberSharesAuth(rs.getInt("numberSharesAuth"));
@@ -84,6 +84,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 			while(rs.next()) {
 				shareHolder.setId(rs.getString("id"));
 				shareHolder.setFullname(rs.getString("fullname"));
+				shareHolder.setShareHolderCode(rs.getString("shareHolderCode"));
 				shareHolder.setIdentityCard(rs.getString("identityCard"));
 				shareHolder.setEmail(rs.getString("email"));
 				shareHolder.setPhoneNumber(rs.getString("phoneNumber"));
@@ -91,12 +92,12 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 				shareHolder.setNationality(rs.getString("nationality"));
 				shareHolder.setUsername(rs.getString("username"));
 				shareHolder.setPassword(rs.getString("password"));
-				shareHolder.setIdMeeting(rs.getString("idMeeting"));
+				shareHolder.setIdMeeting(rs.getInt("idMeeting"));
 				shareHolder.setStatus(rs.getInt("status"));
 				shareHolder.setNumberShares(rs.getInt("numberShares"));
 				shareHolder.setNumberSharesAuth(rs.getInt("numberSharesAuth"));
 				shareHolder.setRole(rs.getInt("role"));
-				shareHolder.setShareHolderCode(rs.getString("shareholderCode"));
+				
 				return Optional.of(shareHolder);
 			}
 
@@ -118,27 +119,28 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 	@Override
 	public Integer save(ShareHolder shareHolder) {
 		StringBuilder sql = new StringBuilder(
-				    "INSERT INTO tblShareholder (fullname,identityCard,email,address,phoneNumber,nationality,username,"
-				  + "password,idMeeting,status,numberShares,numberSharesAuth,role,shareHolderCode) "
+				    "INSERT INTO tblShareholder (fullname,shareHolderCode,identityCard,email,address,phoneNumber,nationality,username,"
+				  + "password,idMeeting,status,numberShares,numberSharesAuth,role) "
 				  + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		PreparedStatement stmt = null;
 		try {
 			conn=ConnectionUtils.getInstance().getConnection();
 			stmt=conn.prepareStatement(sql.toString());
 			stmt.setString(1, shareHolder.getFullname());
-			stmt.setString(2, shareHolder.getIdentityCard());
-			stmt.setString(3, shareHolder.getEmail());
-			stmt.setString(4, shareHolder.getAddress());
-			stmt.setString(5, shareHolder.getPhoneNumber());
-			stmt.setString(6, shareHolder.getNationality());
-			stmt.setString(7, shareHolder.getUsername());
-			stmt.setString(8, shareHolder.getPassword());
-			stmt.setString(9, shareHolder.getIdMeeting());
-			stmt.setInt(10,shareHolder.getStatus());
-			stmt.setInt(11,shareHolder.getNumberShares());
-			stmt.setInt(12,shareHolder.getNumberSharesAuth());
-			stmt.setInt(13, shareHolder.getRole());
-			stmt.setString(14,shareHolder.getShareHolderCode());
+			stmt.setString(2,shareHolder.getShareHolderCode());
+			stmt.setString(3, shareHolder.getIdentityCard());
+			stmt.setString(4, shareHolder.getEmail());
+			stmt.setString(5, shareHolder.getAddress());
+			stmt.setString(6, shareHolder.getPhoneNumber());
+			stmt.setString(7, shareHolder.getNationality());
+			stmt.setString(8, shareHolder.getUsername());
+			stmt.setString(9, shareHolder.getPassword());
+			stmt.setInt(10, shareHolder.getIdMeeting());
+			stmt.setInt(11,shareHolder.getStatus());
+			stmt.setInt(12,shareHolder.getNumberShares());
+			stmt.setInt(13,shareHolder.getNumberSharesAuth());
+			stmt.setInt(14, shareHolder.getRole());
+		
 			stmt.addBatch();
 			stmt.executeBatch();
 			return 1;
@@ -160,28 +162,29 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 	@Override
 	public Integer update(ShareHolder shareHolder) {
 		StringBuilder sql = new StringBuilder(""
-				+ "UPDATE tblShareholder SET fullname=?,identityCard=?,email=?,address=?,"
+				+ "UPDATE tblShareholder SET fullname=?,shareHolderCode=?,identityCard=?,email=?,address=?,"
 				+ "phoneNumber=?,nationality=?,username=?,password=?,idMeeting=?,status=?,numberShares=?,"
-				+ "numberSharesAuth=?,role=?,shareHolderCode=? WHERE id=?");
+				+ "numberSharesAuth=?,role=? WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
 			stmt.setString(1, shareHolder.getFullname());
-			stmt.setString(2, shareHolder.getIdentityCard());
-			stmt.setString(3, shareHolder.getEmail());
-			stmt.setString(4, shareHolder.getAddress());
-			stmt.setString(5, shareHolder.getPhoneNumber());
-			stmt.setString(6, shareHolder.getNationality());
-			stmt.setString(7, shareHolder.getUsername());
-			stmt.setString(8, shareHolder.getPassword());
-			stmt.setString(9, shareHolder.getIdMeeting());
-			stmt.setInt(10,shareHolder.getStatus());
-			stmt.setInt(11,shareHolder.getNumberShares());
-			stmt.setInt(12,shareHolder.getNumberSharesAuth());
-			stmt.setInt(13, shareHolder.getRole());
-			stmt.setString(14,shareHolder.getShareHolderCode());
+			stmt.setString(2,shareHolder.getShareHolderCode());
+			stmt.setString(3, shareHolder.getIdentityCard());
+			stmt.setString(4, shareHolder.getEmail());
+			stmt.setString(5, shareHolder.getAddress());
+			stmt.setString(6, shareHolder.getPhoneNumber());
+			stmt.setString(7, shareHolder.getNationality());
+			stmt.setString(8, shareHolder.getUsername());
+			stmt.setString(9, shareHolder.getPassword());
+			stmt.setInt(10, shareHolder.getIdMeeting());
+			stmt.setInt(11,shareHolder.getStatus());
+			stmt.setInt(12,shareHolder.getNumberShares());
+			stmt.setInt(13,shareHolder.getNumberSharesAuth());
+			stmt.setInt(14, shareHolder.getRole());
 			stmt.setString(15,shareHolder.getId());
+			
 			stmt.addBatch();
 			stmt.executeBatch();
 			return 1;
@@ -229,9 +232,49 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 	}
 
 	@Override
-	public List<ShareHolder> searchByIdentityCard(String identityCard) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ShareHolder> getByIdMeeting(String idMeeting) {
+		List<ShareHolder> shareHolders = new ArrayList<ShareHolder>();
+		StringBuilder sql = new StringBuilder("SELECT * FROM tblShareholder WHERE idMeeting=?");
+		PreparedStatement stmt = null;
+		try {
+			logger.info("GET DATA FROM SHAREHOLDER TABLE");
+			logger.info("SHARE HOLDER INFO ID: "+idMeeting);
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, idMeeting);
+			ResultSet rs=stmt.executeQuery();
+			while (rs.next()) {
+				ShareHolder shareHolder = new ShareHolder();
+				shareHolder.setId(rs.getString("id"));
+				shareHolder.setFullname(rs.getString("fullname"));
+				shareHolder.setShareHolderCode(rs.getString("shareHolderCode"));
+				shareHolder.setIdentityCard(rs.getString("identityCard"));
+				shareHolder.setEmail(rs.getString("email"));
+				shareHolder.setAddress(rs.getString("address"));
+				shareHolder.setPhoneNumber(rs.getString("phoneNumber"));
+				shareHolder.setNationality(rs.getString("nationality"));
+				shareHolder.setUsername(rs.getString("username"));
+				shareHolder.setPassword(rs.getString("password"));
+				shareHolder.setIdMeeting(rs.getInt("idMeeting"));
+				shareHolder.setStatus(rs.getInt("status"));
+				shareHolder.setNumberShares(rs.getInt("numberShares"));
+				shareHolder.setNumberSharesAuth(rs.getInt("numberSharesAuth"));
+				shareHolder.setRole(rs.getInt("role"));
+				shareHolders.add(shareHolder);
+			}
+
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA :"+e.getMessage());
+
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+		}
+		return  shareHolders;
 	}
 	
 	
@@ -249,6 +292,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 				ShareHolder shareholder = new ShareHolder(
 						rs.getString("id"),
 						rs.getString("fullname"),
+						rs.getString("shareHolderCode"),
 						rs.getString("identityCard"),
 						rs.getString("email"),
 						rs.getString("address"),
@@ -256,8 +300,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 						rs.getString("nationality"),
 						rs.getString("username"),
 						rs.getString("password"),
-						rs.getString("idMeeting"),
-						rs.getString("shareholderCode"),
+						rs.getInt("idMeeting"),
 						rs.getInt("status"),
 						rs.getInt("numberShares"),
 						rs.getInt("numberSharesAuth"),

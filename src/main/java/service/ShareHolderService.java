@@ -16,6 +16,8 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
+
 import common.StatusCode;
 import dao.ShareHolderDao;
 import dao.daoimpl.ShareHolderDaoImpl;
@@ -26,7 +28,7 @@ import model.request.ShareHolderRequest;
 @Path("shareholder")
 public class ShareHolderService {
 	private static final Logger logger = Logger.getLogger(ShareHolderService.class);
-
+	Gson gson = new Gson();
 	@Inject
 	private ShareHolderDao<ShareHolder> shareHolderImpl;
 
@@ -60,10 +62,11 @@ public class ShareHolderService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("all")
+	@Path("/all")
 	public Response shareHolders() {
 		logger.info("Get All Shareholder");
 		try {
+			
 			List<ShareHolder> shareHolders = shareHolderImpl.getAll();
 			return Response.ok(
 					new ApiResponse(
@@ -86,6 +89,7 @@ public class ShareHolderService {
 		ShareHolder shareholder = new ShareHolder();
 		try {
 			shareholder.setFullname(shareholderRequest.getFullname());
+			shareholder.setShareHolderCode(shareholderRequest.getShareHolderCode());
 			shareholder.setIdentityCard(shareholderRequest.getIdentityCard());
 			shareholder.setEmail(shareholderRequest.getEmail());
 			shareholder.setAddress(shareholderRequest.getAddress());
@@ -95,10 +99,9 @@ public class ShareHolderService {
 			shareholder.setNationality(shareholderRequest.getNationality());
 			shareholder.setIdMeeting(shareholderRequest.getIdMeeting());
 			shareholder.setStatus(shareholderRequest.getStatus());
-			shareholder.setNumberShares(shareholderRequest.getNumberShared());
-			shareholder.setNumberSharesAuth(shareholderRequest.getNumberAuthShared());
+			shareholder.setNumberShares(shareholderRequest.getNumberShares());
+			shareholder.setNumberSharesAuth(shareholderRequest.getNumberSharesAuth());
 			shareholder.setRole(shareholderRequest.getRole());
-			shareholder.setShareHolderCode(shareholderRequest.getShareHoldeCode());
 			int insert = shareHolderImpl.save(shareholder);
 			if(insert==0) {
 				return Response.ok(new ApiResponse(
@@ -120,12 +123,13 @@ public class ShareHolderService {
 	}
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("edit/{id}")
+	@Path("/{id}")
 	public Response updateShareHolder(@PathParam("id")String id,ShareHolderRequest shareholderRequest) {
 		ShareHolder shareholder = new ShareHolder();
 		try {
 			shareholder.setId(id);
 			shareholder.setFullname(shareholderRequest.getFullname());
+			shareholder.setShareHolderCode(shareholderRequest.getShareHolderCode());
 			shareholder.setIdentityCard(shareholderRequest.getIdentityCard());
 			shareholder.setEmail(shareholderRequest.getEmail());
 			shareholder.setAddress(shareholderRequest.getAddress());
@@ -135,10 +139,9 @@ public class ShareHolderService {
 			shareholder.setNationality(shareholderRequest.getNationality());
 			shareholder.setIdMeeting(shareholderRequest.getIdMeeting());
 			shareholder.setStatus(shareholderRequest.getStatus());
-			shareholder.setNumberShares(shareholderRequest.getNumberShared());
-			shareholder.setNumberSharesAuth(shareholderRequest.getNumberAuthShared());
+			shareholder.setNumberShares(shareholderRequest.getNumberShares());
+			shareholder.setNumberSharesAuth(shareholderRequest.getNumberSharesAuth());
 			shareholder.setRole(shareholderRequest.getRole());
-			shareholder.setShareHolderCode(shareholderRequest.getShareHoldeCode());
 			int edit = shareHolderImpl.update(shareholder);
 			if(edit==0) {
 				return Response.ok(new ApiResponse(
@@ -161,7 +164,7 @@ public class ShareHolderService {
 	}
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
+	@Path("/{id}")
 	public Response deleteShareHolder(@PathParam("id")String id) {
 		ShareHolder shareholder = new ShareHolder();
 		try {
@@ -183,6 +186,28 @@ public class ShareHolderService {
 					StatusCode.DELETE_FAILED.getValue(),
 					StatusCode.DELETE_FAILED.getDescription(),
 					null)).build();
+		}
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/allByMeeting/{idMeeting}")
+	public Response getAllByMeeting(@PathParam("idMeeting")String idMeeting) {
+		logger.info("Get All Shareholder");
+		try {
+			
+			List<ShareHolder> shareHolders = shareHolderImpl.getByIdMeeting(idMeeting);
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_SUCCESS.getValue(),
+							StatusCode.DATA_SUCCESS.getDescription(), shareHolders))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_FAILED.getValue(),
+							StatusCode.DATA_FAILED.getDescription(), null))
+					.build();
 		}
 	}
 	

@@ -24,7 +24,7 @@ public class TokenProvider {
 	@PostConstruct
 	public void init() {
 		this.tokenSecret = "bvsc";
-		this.tokenValidity = TimeUnit.MINUTES.toMillis(2);
+		this.tokenValidity = TimeUnit.MINUTES.toMillis(60);
 	}
 
 	public String generateToken(String username) {

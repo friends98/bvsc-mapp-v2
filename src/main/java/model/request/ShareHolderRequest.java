@@ -10,23 +10,22 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ShareHolderRequest {
-	//
+	private String id;
 	private String fullname;
+	private String shareHolderCode;
 	private String identityCard;
 	private String email;
 	private String address;
 	private String phoneNumber;
 	private String nationality;
-	//
 	private String username;
 	private String password;
-	private String idMeeting;
-	//private Integer idShareholder;
-	private Integer status; // status account join meeting
-	private Integer numberShared;
-	private Integer numberAuthShared;
+	private Integer idMeeting;
+	private Integer status;
+	private Integer numberShares;
+	private Integer numberSharesAuth;
 	private Integer role;
-	private String shareHoldeCode;
+	
 	
 
 }

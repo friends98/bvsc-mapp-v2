@@ -19,6 +19,7 @@ import dao.AdminDao;
 import dao.ShareHolderDao;
 import model.AuthErrorReponse;
 import model.AuthResponse;
+import model.AdminAuthResponse;
 import model.entity.Admin;
 import model.entity.ShareHolder;
 import model.request.LoginRequest;
@@ -89,7 +90,7 @@ public class AuthService {
 		try {
 			String username = loginRequest.getUsername();
 			String password = loginRequest.getPassword();
-			Optional<Admin> opAdmin =adminDao.findByUserNameAndPassword(username, password);
+			Optional<Admin> opAdmin = adminDao.findByUserNameAndPassword(username, password);
 			if(opAdmin.isEmpty()) {
 				return Response.ok(new AuthErrorReponse(
 						StatusCode.LOGIN_FAILED.getValue(),
@@ -99,13 +100,12 @@ public class AuthService {
 			}
 			String jwtToken = tokenProvider.generateToken(username);
 			return Response.ok(
-					new AuthResponse(
+					new AdminAuthResponse(
 							opAdmin.get().getId(),
 							username, 
 							jwtToken,
 							tokenProvider.getExpFromJwtToken(jwtToken)
-							.getTime(), 
-							1))
+							.getTime(), opAdmin.get().getIdCompany()))
 					.build();
 		} catch (Exception e) {
 			return Response.ok(new AuthErrorReponse(

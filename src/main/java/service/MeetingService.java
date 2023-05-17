@@ -1,9 +1,10 @@
 package service;
 
-import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -28,7 +29,8 @@ import model.request.MeetingInfoRequest;
 public class MeetingService {
 	private static final Logger logger = Logger.getLogger(MeetingService.class.getName());
 	
-	
+	@Inject
+	private utils.FileUtils fileUtils;
 	
 	@Inject 
 	private MeetingDao<MeetingInfo> meetingDaoImpl;
@@ -36,7 +38,7 @@ public class MeetingService {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
+	@Path("/{id}")
 	public Response meetingDetails(@PathParam("id")Integer id) {
 		meetingDaoImpl = new MeetingDaoImpl();
 		try {
@@ -60,21 +62,48 @@ public class MeetingService {
 		}
 	}
 	
-	@POST
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addMeeting(MeetingInfoRequest meetingInfoReq) {
-		MeetingInfo meetingInfo = new MeetingInfo();
-		meetingInfo.setIdCompany(meetingInfoReq.getIdCompany());
-		meetingInfo.setNameMeeting(meetingInfoReq.getNameMeeting());
-		meetingInfo.setNumberOrganized(meetingInfoReq.getNumberOrganized());
-		meetingInfo.setYearOrganized(meetingInfoReq.getYearOrganized());
-		meetingInfo.setStatus(Constants.MEETING_INIT);
-		meetingInfo.setImageBanner(meetingInfoReq.getImageBanner());
-		meetingInfo.setStartTime(Timestamp.valueOf(meetingInfoReq.getStartTime()));
-		meetingInfo.setEndTime(Timestamp.valueOf(meetingInfoReq.getEndTime()));
-		meetingInfo.setAddress(meetingInfoReq.getAddress());
+	@Path("/all")
+	public Response meetings() {
+		logger.info("Get All Shareholder");
 		try {
+			
+			List<MeetingInfo> meetings = meetingDaoImpl.getAll();
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_SUCCESS.getValue(),
+							StatusCode.DATA_SUCCESS.getDescription(), meetings))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_FAILED.getValue(),
+							StatusCode.DATA_FAILED.getDescription(), null))
+					.build();
+		}
+
+	}
+	
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addMeeting(MeetingInfoRequest meetingInfoReq){
+		String image64=fileUtils.uploadImage(meetingInfoReq.getImageBanner());
+
+		try {
+			MeetingInfo meetingInfo = new MeetingInfo();
+			meetingInfo.setIdCompany(meetingInfoReq.getIdCompany());
+			meetingInfo.setNameMeeting(meetingInfoReq.getNameMeeting());
+			meetingInfo.setNumberOrganized(meetingInfoReq.getNumberOrganized());
+			meetingInfo.setYearOrganized(meetingInfoReq.getYearOrganized());
+			meetingInfo.setStatus(Constants.MEETING_INIT);
+			meetingInfo.setImageBanner(image64);
+			meetingInfo.setStartTime(meetingInfoReq.getStartTime());
+			meetingInfo.setEndTime(meetingInfoReq.getEndTime());
+			meetingInfo.setAddress(meetingInfoReq.getAddress());
 			int insert = meetingDaoImpl.save(meetingInfo);
+			
 			if(insert==0) {
 				return Response.ok(new ApiResponse(
 						StatusCode.INSERT_FAILED.getValue(),
@@ -92,12 +121,11 @@ public class MeetingService {
 					StatusCode.INSERT_FAILED.getDescription(),
 					null)).build();
 		}
-		
 	}
 	
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("edit/{id}")
+	@Path("/{id}")
 	public Response updateMeeting(@PathParam("id")Integer id,MeetingInfoRequest meetingInfoReq) {
 		MeetingInfo meetingInfo = new MeetingInfo();
 		meetingInfo.setId(id);
@@ -107,8 +135,8 @@ public class MeetingService {
 		meetingInfo.setYearOrganized(meetingInfoReq.getYearOrganized());
 		meetingInfo.setStatus(meetingInfoReq.getStatus());
 		meetingInfo.setImageBanner(meetingInfoReq.getImageBanner());
-		meetingInfo.setStartTime(Timestamp.valueOf(meetingInfoReq.getStartTime()));
-		meetingInfo.setEndTime(Timestamp.valueOf(meetingInfoReq.getStartTime()));
+		meetingInfo.setStartTime(meetingInfoReq.getStartTime());
+		meetingInfo.setEndTime(meetingInfoReq.getStartTime());
 		meetingInfo.setAddress(meetingInfoReq.getAddress());
 		try {
 			int edit = meetingDaoImpl.update(meetingInfo);
@@ -133,7 +161,7 @@ public class MeetingService {
 	
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
+	@Path("/{id}")
 	public Response deleteMeeting(@PathParam("id")Integer id) {
 		MeetingInfo meetingInfo = new MeetingInfo();
 		meetingInfo.setId(id);
@@ -155,6 +183,28 @@ public class MeetingService {
 					StatusCode.DELETE_FAILED.getValue(),
 					StatusCode.DELETE_FAILED.getDescription(),
 					null)).build();
+		}
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/allByCompany/{idCompany}")
+	public Response getAllByCompany(@PathParam("idCompany")String idCompany) {
+		logger.info("Get All Meeting");
+		try {
+			
+			List<MeetingInfo> meetingInfos = meetingDaoImpl.getByIdCompany(idCompany);
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_SUCCESS.getValue(),
+							StatusCode.DATA_SUCCESS.getDescription(), meetingInfos))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_FAILED.getValue(),
+							StatusCode.DATA_FAILED.getDescription(), null))
+					.build();
 		}
 	}
 

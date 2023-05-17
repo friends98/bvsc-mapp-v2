@@ -3,6 +3,7 @@ package dao.daoimpl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,15 +15,50 @@ import connection.ConnectionUtils;
 import dao.MeetingDao;
 import model.entity.MeetingInfo;
 
+
 @Stateless
 public class MeetingDaoImpl implements MeetingDao<MeetingInfo> {
 private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
-	
 	Connection conn = null;
 	@Override
 	public List<MeetingInfo> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<MeetingInfo> meetings = new ArrayList<MeetingInfo>();
+		PreparedStatement stmt = null;
+		try {
+			logger.info("GET ALL DATA FROM MEETING TABLE");
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement("SELECT * FROM tblMeeting");
+			ResultSet rs =stmt.executeQuery();
+
+			while (rs.next()) {
+				MeetingInfo meeting = new MeetingInfo();
+				meeting.setId(rs.getInt("id"));
+				meeting.setIdCompany(rs.getInt("idCompany"));
+				meeting.setNameMeeting(rs.getString("nameMeeting"));
+				meeting.setNumberOrganized(rs.getInt("numberOrganized"));
+				meeting.setYearOrganized(rs.getDate("yearOrganized"));
+				meeting.setStatus(rs.getInt("status"));
+				meeting.setImageBanner(rs.getString("imageBanner"));
+				meeting.setStartTime(rs.getDate("startTime"));
+				meeting.setEndTime(rs.getDate("endTime"));
+				meeting.setAddress(rs.getString("address"));
+				meetings.add(meeting);
+			}
+			
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA : "+e.getMessage());
+			
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+			
+		}
+		return meetings;
 	}
 
 	@Override
@@ -37,14 +73,14 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				MeetingInfo meetingInfo = new MeetingInfo();
-				meetingInfo.setIdCompany(rs.getString("idCompany"));
+				meetingInfo.setIdCompany(rs.getInt("idCompany"));
 				meetingInfo.setNameMeeting(rs.getString("nameMeeting"));
 				meetingInfo.setNumberOrganized(rs.getInt("numberOrganized"));
 				meetingInfo.setYearOrganized(rs.getDate("yearOrganized"));
 				meetingInfo.setStatus(rs.getInt("status"));
 				meetingInfo.setImageBanner(rs.getString("imageBanner"));
-				meetingInfo.setStartTime(rs.getTimestamp("startTime"));
-				meetingInfo.setEndTime(rs.getTimestamp("endTime"));
+				meetingInfo.setStartTime(rs.getDate("startTime"));
+				meetingInfo.setEndTime(rs.getDate("endTime"));
 				meetingInfo.setAddress(rs.getString("address"));
 				return Optional.of(meetingInfo);
 			}
@@ -68,17 +104,20 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 				+ "INSERT INTO tblMeeting (idCompany,nameMeeting,numberOrganized,yearOrganized,status,imageBanner,"
 				+ "startTime,endTime,address) VALUES(?,?,?,?,?,?,?,?,?)");
 		PreparedStatement stmt = null;
+//		String imageBytes = meetingInfo.getImageBanner();
+//		byte[] bytes = Base64.getDecoder().decode(imageBytes); 
+//		String imageBase64 = Base64.getEncoder().encodeToString(bytes);
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
-			stmt.setString(1, meetingInfo.getIdCompany());
+			stmt.setInt(1, meetingInfo.getIdCompany());
 			stmt.setString(2, meetingInfo.getNameMeeting());
 			stmt.setInt(3, meetingInfo.getNumberOrganized());
 			stmt.setDate(4, meetingInfo.getYearOrganized());
 			stmt.setInt(5, meetingInfo.getStatus());
 			stmt.setString(6, meetingInfo.getImageBanner());
-			stmt.setTimestamp(7, meetingInfo.getStartTime());
-			stmt.setTimestamp(8, meetingInfo.getEndTime());
+			stmt.setDate(7, meetingInfo.getStartTime());
+			stmt.setDate(8, meetingInfo.getEndTime());
 			stmt.setString(9, meetingInfo.getAddress());
 			stmt.addBatch();
 			stmt.executeBatch();
@@ -107,14 +146,14 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
-			stmt.setString(1, meetingInfo.getIdCompany());
+			stmt.setInt(1, meetingInfo.getIdCompany());
 			stmt.setString(2, meetingInfo.getNameMeeting());
 			stmt.setInt(3, meetingInfo.getNumberOrganized());
 			stmt.setDate(4, meetingInfo.getYearOrganized());
 			stmt.setInt(5, meetingInfo.getStatus());
 			stmt.setString(6, meetingInfo.getImageBanner());
-			stmt.setTimestamp(7, meetingInfo.getStartTime());
-			stmt.setTimestamp(8, meetingInfo.getEndTime());
+			stmt.setDate(7, meetingInfo.getStartTime());
+			stmt.setDate(8, meetingInfo.getEndTime());
 			stmt.setString(9, meetingInfo.getAddress());
 			stmt.setInt(10, meetingInfo.getId());
 			stmt.addBatch();
@@ -165,6 +204,47 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 	public Optional<MeetingInfo> getById(String id) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
+	}
+
+	@Override
+	public List<MeetingInfo> getByIdCompany(String idCompany) {
+		List<MeetingInfo> meetingInfos = new ArrayList<MeetingInfo>();
+		StringBuilder sql = new StringBuilder("SELECT * FROM tblMeeting WHERE idCompany=?");
+		PreparedStatement stmt = null;
+		try {
+			logger.info("GET DATA FROM Meeting TABLE");
+			logger.info("SHARE HOLDER INFO ID: "+idCompany);
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, idCompany);
+			ResultSet rs=stmt.executeQuery();
+			while (rs.next()) {
+				MeetingInfo meetingInfo = new MeetingInfo();
+				meetingInfo.setId(rs.getInt("id"));
+				meetingInfo.setIdCompany(rs.getInt("idCompany"));
+				meetingInfo.setNameMeeting(rs.getString("nameMeeting"));
+				meetingInfo.setNumberOrganized(rs.getInt("numberOrganized"));
+				meetingInfo.setYearOrganized(rs.getDate("yearOrganized"));
+				meetingInfo.setStatus(rs.getInt("status"));
+				meetingInfo.setImageBanner(rs.getString("imageBanner"));
+				meetingInfo.setStartTime(rs.getDate("startTime"));
+				meetingInfo.setEndTime(rs.getDate("endTime"));
+				meetingInfo.setAddress(rs.getString("address"));
+				meetingInfos.add(meetingInfo);
+			}
+
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA :"+e.getMessage());
+
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+		}
+		return  meetingInfos;
 	}
 
 }

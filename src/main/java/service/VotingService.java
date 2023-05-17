@@ -1,6 +1,6 @@
 package service;
 
-import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -30,6 +30,28 @@ public class VotingService {
 	@Inject
 	private VotingDao<Voting> votingImpl;
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/all")
+	public Response votings() {
+		logger.info("Get All Voting");
+		try {
+			
+			List<Voting> votings = votingImpl.getAll();
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_SUCCESS.getValue(),
+							StatusCode.DATA_SUCCESS.getDescription(), votings))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_FAILED.getValue(),
+							StatusCode.DATA_FAILED.getDescription(), null))
+					.build();
+		}
+
+	}
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
@@ -40,7 +62,7 @@ public class VotingService {
 			Voting voting = new Voting();
 			voting.setIdMeeting(votingReq.getIdMeeting());
 			voting.setContent(votingReq.getContent());
-			voting.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+			voting.setCreatedTime(votingReq.getCreatedTime());
 					
 			int insert = votingImpl.save(voting);
 			if(insert==0) {
@@ -65,14 +87,16 @@ public class VotingService {
 	
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("edit/{id}")
+	@Path("/{id}")
 	public Response updateVoting(@PathParam("id")String id,VotingRequest votingReq) {
 		votingImpl = new VotingDaoImpl();
 		try {
 			Voting voting = new Voting();
 			voting.setIdMeeting(votingReq.getIdMeeting());
 			voting.setContent(votingReq.getContent());
-			voting.setModifiedTime(new Timestamp(System.currentTimeMillis()));
+			voting.setCreatedTime(votingReq.getCreatedTime());
+			voting.setModifiedTime(votingReq.getModifiedTime());
+			voting.setId(id);
 			
 			int edit = votingImpl.update(voting);
 			if(edit==0) {
@@ -148,6 +172,28 @@ public class VotingService {
 					null)).build();
 		}
 		
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/allByMeeting/{idMeeting}")
+	public Response getAllByMeetingVoting(@PathParam("idMeeting")String idMeeting) {
+		logger.info("Get All Voting By Meetings");
+		try {
+			
+			List<Voting> votings = votingImpl.getByIdMeeting(idMeeting);
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_SUCCESS.getValue(),
+							StatusCode.DATA_SUCCESS.getDescription(), votings))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_FAILED.getValue(),
+							StatusCode.DATA_FAILED.getDescription(), null))
+					.build();
+		}
 	}
 
 }

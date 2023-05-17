@@ -7,7 +7,6 @@
   <properties>
 	  <version.jsonwebtoken>0.6.0</version.jsonwebtoken>
   </properties>
-  
   <dependencies>
 	   <!-- https://mvnrepository.com/artifact/javax/javaee-api -->
 	<dependency>
@@ -29,32 +28,54 @@
 	    <version>1.8.3</version>
 	    <scope>test</scope>
 	</dependency>
-	
+	<dependency>
+	  <groupId>commons-io</groupId>
+	  <artifactId>commons-io</artifactId>
+	  <version>2.11.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.glassfish.jersey.media</groupId>
+	    <artifactId>jersey-media-multipart</artifactId>
+	    <version>2.34</version>
+	</dependency>
+	<dependency>
+	    <groupId>javax.ws.rs</groupId>
+	    <artifactId>javax.ws.rs-api</artifactId>
+	    <version>2.1.1</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+	<dependency>
+	    <groupId>com.google.code.gson</groupId>
+	    <artifactId>gson</artifactId>
+	    <version>2.10.1</version>
+	</dependency>
 	<dependency>
 		 <groupId>com.auth0</groupId>
 		 <artifactId>java-jwt</artifactId>
 		 <version>3.3.0</version>
 	 </dependency>
-	 
 	 <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>${version.jsonwebtoken}</version>
       </dependency>
       <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
-	<dependency>
-    	<groupId>com.microsoft.sqlserver</groupId>
-   		<artifactId>mssql-jdbc</artifactId>
-    	<version>8.4.1.jre11</version>
-	</dependency>
-	<dependency>
+		<dependency>
+	    	<groupId>com.microsoft.sqlserver</groupId>
+	   		<artifactId>mssql-jdbc</artifactId>
+	    	<version>8.4.1.jre11</version>
+		</dependency>
+		<dependency>
 		<groupId>org.projectlombok</groupId>
-		<artifactId>lombok</artifactId>
-		<version>1.18.26</version>
-		<scope>provided</scope>
-	</dependency>
-	
-
+			<artifactId>lombok</artifactId>
+			<version>1.18.26</version>
+			<scope>provided</scope>
+		</dependency>
+		<!--<dependency>
+			<groupId>BVS-Vote</groupId>
+			<artifactId>BVS-Vote</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>-->
   </dependencies>
   <build>
     <plugins>

@@ -32,7 +32,7 @@ public class ConnectionUtils {
 	private static final String portNumber = "1433";
 	private static final String databaseName = "BVSC_App_Voting";
 	private static final String username = "sa";
-	private static final String password = "123456";
+	private static final String password = "Nvmduc@123";
 
 	private static final String url = "jdbc:sqlserver://" + serverName + ":" + portNumber + ";database=" + databaseName
 			+ ";user=" + username + ";password=" + password;

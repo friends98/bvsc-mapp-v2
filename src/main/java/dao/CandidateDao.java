@@ -24,7 +24,12 @@ public class CandidateDao {
 			 ps=conn.prepareStatement(sql);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
-				CompanyInfo candidate =new CompanyInfo(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4),rs.getString(5),new Date(rs.getDate(6).getTime()));
+				CompanyInfo candidate = new CompanyInfo(
+						rs.getInt(1), 
+						rs.getString(2), 
+						rs.getString(3), 
+						rs.getInt(4),rs.getString(5),
+						new Date(rs.getDate(6).getTime()));
 				listCandidate.add(candidate);
 			}
 		} catch (Exception e) {
