@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class MeetingInfo {
 	private Integer id;
-	private String idCompany;
+	private Integer idCompany;
 	private String nameMeeting;
 	private Integer numberOrganized;
 	private Date yearOrganized;

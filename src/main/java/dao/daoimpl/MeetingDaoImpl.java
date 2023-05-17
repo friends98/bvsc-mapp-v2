@@ -37,7 +37,7 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				MeetingInfo meetingInfo = new MeetingInfo();
-				meetingInfo.setIdCompany(rs.getString("idCompany"));
+				meetingInfo.setIdCompany(rs.getInt("idCompany"));
 				meetingInfo.setNameMeeting(rs.getString("nameMeeting"));
 				meetingInfo.setNumberOrganized(rs.getInt("numberOrganized"));
 				meetingInfo.setYearOrganized(rs.getDate("yearOrganized"));
@@ -71,7 +71,7 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
-			stmt.setString(1, meetingInfo.getIdCompany());
+			stmt.setInt(1, meetingInfo.getIdCompany());
 			stmt.setString(2, meetingInfo.getNameMeeting());
 			stmt.setInt(3, meetingInfo.getNumberOrganized());
 			stmt.setDate(4, meetingInfo.getYearOrganized());
@@ -107,7 +107,7 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
-			stmt.setString(1, meetingInfo.getIdCompany());
+			stmt.setInt(1, meetingInfo.getIdCompany());
 			stmt.setString(2, meetingInfo.getNameMeeting());
 			stmt.setInt(3, meetingInfo.getNumberOrganized());
 			stmt.setDate(4, meetingInfo.getYearOrganized());

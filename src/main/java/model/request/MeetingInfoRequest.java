@@ -14,7 +14,7 @@ import lombok.Setter;
 public class MeetingInfoRequest {
 	
 	private Integer id;
-	private String idCompany;
+	private Integer idCompany;
 	private String nameMeeting;
 	private Integer numberOrganized;
 	private Date yearOrganized;

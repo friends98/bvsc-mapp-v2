@@ -32,19 +32,21 @@ public class FileService {
 	public Response upload() {
 		try {
 			String file ="C:/Users/it-admin/Downloads/bvsc.xlsx";
-			List<ShareHolder> shareholders =fileUtils.readExcelFile(file);
+			
 			long start =System.currentTimeMillis();
-			int upload=fileDao.upload(shareholders);
+			List<ShareHolder> shareholders =fileUtils.readExcelFile(file);
 			logger.info("Time out: "+(System.currentTimeMillis()-start));
+			int upload=fileDao.upload(shareholders);
 			if(upload==0) {
 				return Response.ok(new ApiResponse(
 						StatusCode.UPLOAD_FAILED.getValue(),
 						StatusCode.UPLOAD_FAILED.getDescription(), null)).build();
 			}
+
 			return Response.ok(new ApiResponse(
 					StatusCode.UPLOAD_SUCCESS.getValue(),
 					StatusCode.UPLOAD_SUCCESS.getDescription(), null)).build();
-
+			
 		} catch (Exception e) {
 			logger.error("ERROR : "+e.getMessage());
 			return Response.ok(new ApiResponse(

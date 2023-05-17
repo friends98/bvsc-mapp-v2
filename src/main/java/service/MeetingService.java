@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import common.Constants;
@@ -30,6 +31,9 @@ public class MeetingService {
 	
 	@Inject 
 	private MeetingDao<MeetingInfo> meetingDaoImpl;
+	
+	@Inject
+	private utils.FileUtils fileUtils;
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -60,14 +64,15 @@ public class MeetingService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addMeeting(MeetingInfoRequest meetingInfoReq) {
-		
+		String image64=fileUtils.uploadImage(meetingInfoReq.getImageBanner());
+		//logger.info("image :"+image64);
 		MeetingInfo meetingInfo = new MeetingInfo();
 		meetingInfo.setIdCompany(meetingInfoReq.getIdCompany());
 		meetingInfo.setNameMeeting(meetingInfoReq.getNameMeeting());
 		meetingInfo.setNumberOrganized(meetingInfoReq.getNumberOrganized());
 		meetingInfo.setYearOrganized(meetingInfoReq.getYearOrganized());
 		meetingInfo.setStatus(Constants.MEETING_INIT);
-		meetingInfo.setImageBanner(meetingInfoReq.getImageBanner());
+		meetingInfo.setImageBanner(image64);
 		meetingInfo.setStartTime(Timestamp.valueOf(meetingInfoReq.getStartTime()));
 		meetingInfo.setEndTime(Timestamp.valueOf(meetingInfoReq.getEndTime()));
 		meetingInfo.setAddress(meetingInfoReq.getAddress());
@@ -97,6 +102,7 @@ public class MeetingService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("edit/{id}")
 	public Response updateMeeting(@PathParam("id")Integer id,MeetingInfoRequest meetingInfoReq) {
+		String image64=fileUtils.uploadImage(meetingInfoReq.getImageBanner());
 		MeetingInfo meetingInfo = new MeetingInfo();
 		meetingInfo.setId(id);
 		meetingInfo.setIdCompany(meetingInfoReq.getIdCompany());
@@ -104,7 +110,7 @@ public class MeetingService {
 		meetingInfo.setNumberOrganized(meetingInfoReq.getNumberOrganized());
 		meetingInfo.setYearOrganized(meetingInfoReq.getYearOrganized());
 		meetingInfo.setStatus(meetingInfoReq.getStatus());
-		meetingInfo.setImageBanner(meetingInfoReq.getImageBanner());
+		meetingInfo.setImageBanner(image64);
 		meetingInfo.setStartTime(Timestamp.valueOf(meetingInfoReq.getStartTime()));
 		meetingInfo.setEndTime(Timestamp.valueOf(meetingInfoReq.getStartTime()));
 		meetingInfo.setAddress(meetingInfoReq.getAddress());

@@ -103,6 +103,7 @@ public class FileUtils {
 		try {
 			byte[] fileContent = org.apache.commons.io.FileUtils.readFileToByteArray(new File(filePath));
 			String encodedString = Base64.getEncoder().encodeToString(fileContent);
+			logger.info("encode: "+encodedString);
 			return encodedString;
 		} catch (IOException e) {
 			

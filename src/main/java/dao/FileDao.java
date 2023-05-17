@@ -30,7 +30,7 @@ public class FileDao {
 				+ "(fullname,identityCard,email,address,phoneNumber,nationality,username,password,idMeeting,status,"
 				+ "numberShares,numberSharesAuth,role,shareHolderCode)"
 				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-		  int batchSize=20000;
+		  int batchSize=2000;
 		  int count =0;
 
 		try {
@@ -58,15 +58,11 @@ public class FileDao {
 				stmt.addBatch();
 				count++;
 				if(count%batchSize==0) {
-					logger.info("Commit batch");
-					int [] result=stmt.executeBatch();
-					logger.info("Number rows: "+result.length);
+					stmt.clearBatch();
 					conn.commit();
 				}
 			}
 			stmt.executeBatch();
-
-			logger.info("TEST OK");
 			long end = System.currentTimeMillis();
 			logger.info("TIME INSERT TO DB: " + (end - start));
 			
@@ -101,7 +97,7 @@ public class FileDao {
 			logger.info("UPLOAD EXCEL FILE TO DB");
 			conn = ConnectionUtils.getInstance().getConnection();
 			long start=System.currentTimeMillis();
-			conn.setAutoCommit(true);
+			conn.setAutoCommit(false);
 
 			int size = list.size();
 			logger.info("Size: "+size);
@@ -125,14 +121,18 @@ public class FileDao {
 				stmt.setString(14,shareHolder.getShareHolderCode());
 				stmt.addBatch();
 				count++;
-				if(count%batchSize==0) {
-					logger.info("Commit batch");
-					int [] result=stmt.executeBatch();
-					logger.info("Number rows: "+result.length);
+				if(count%2==0) {
+					stmt.executeBatch();
 					conn.commit();
 				}
-				stmt.executeBatch();
+				if(count%2==1) {
+					stmt.executeBatch();
+					conn.commit();
+				}
 			}
+			//stmt.executeBatch();
+
+			conn.commit();
 
 			long end = System.currentTimeMillis();
 			logger.info("TIME INSERT TO DB: " + (end - start));
