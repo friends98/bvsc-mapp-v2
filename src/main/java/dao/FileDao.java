@@ -145,8 +145,6 @@ public class FileDao {
 			try {
 				stmt.close();
 				conn.close();
-
-
 			} catch (Exception e2) {
 				logger.info(e2.getMessage());
 			}

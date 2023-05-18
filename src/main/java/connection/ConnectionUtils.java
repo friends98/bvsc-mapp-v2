@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
  */
 @Stateless
 public class ConnectionUtils {
-	// singleton object creation only one
 	private static ConnectionUtils instance = null;
 
 	public ConnectionUtils() {

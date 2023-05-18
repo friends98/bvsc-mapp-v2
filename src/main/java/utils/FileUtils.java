@@ -3,8 +3,6 @@ package utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
@@ -26,8 +24,8 @@ public class FileUtils {
 	
 	
 	public  List<ShareHolder> readExcelFile(String filePath){
-		long start=System.currentTimeMillis();
 		
+		long start=System.currentTimeMillis();
 		File fileExcel = new File(filePath);
 		List<ShareHolder> listData =new ArrayList<>();
 		try {
