@@ -21,7 +21,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 	
 	private static final Logger logger = Logger.getLogger(ShareHolderDaoImpl.class.getName());
 
-	Connection conn=null;
+	private Connection conn=null;
 	
 	@Override
 	public List<ShareHolder> getAll() {

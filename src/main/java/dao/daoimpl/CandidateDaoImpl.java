@@ -33,7 +33,7 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 				Candidate candidate = new Candidate();
 				candidate.setId(rs.getInt("id"));
 				candidate.setIdElection(rs.getString("idElection"));
-				candidate.setFullName(rs.getString("fullname"));
+				candidate.setFullname(rs.getString("Fullname"));
 				candidate.setBirthday(rs.getDate("birthday"));
 				candidate.setAddress(rs.getString("address"));
 				candidate.setSummaryInfo(rs.getString("summaryInfo"));
@@ -67,7 +67,7 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 			while(rs.next()) {
 				candidate.setId(rs.getInt("id"));
 				candidate.setIdElection(rs.getString("idElection"));
-				candidate.setFullName(rs.getString("fullname"));
+				candidate.setFullname(rs.getString("Fullname"));
 				candidate.setBirthday(rs.getDate("birthday"));
 				candidate.setAddress(rs.getString("address"));
 				candidate.setSummaryInfo(rs.getString("summaryInfo"));
@@ -90,14 +90,14 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 	@Override
 	public Integer save(Candidate t) {
 		StringBuilder sql = new StringBuilder(
-				"INSERT INTO tblCandidate (idMeeting,fullname,birthday,address,summaryInfo)" 
+				"INSERT INTO tblCandidate (idElection,fullname,birthday,address,summaryInfo)" 
 			  + "VALUES(?,?,?,?,?)");
 		PreparedStatement stmt = null;
 		try {
 			conn=ConnectionUtils.getInstance().getConnection();
 			stmt=conn.prepareStatement(sql.toString());
 			stmt.setString(1, t.getIdElection());
-			stmt.setString(2, t.getFullName());
+			stmt.setString(2, t.getFullname());
 			stmt.setDate(3, t.getBirthday());
 			stmt.setString(4, t.getAddress());
 			stmt.setString(5, t.getSummaryInfo());
@@ -122,14 +122,14 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 	@Override
 	public Integer update(Candidate candidate) {
 		StringBuilder sql = new StringBuilder(
-				"UPDATE tblCandidate SET idMeeting=?, fullname=?, birthday=?, address=?,summaryInfo=? WHERE id=?");
+				"UPDATE tblCandidate SET idElection=?, fullname=?, birthday=?, address=?,summaryInfo=? WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
 			logger.info("UPDATE DATA CANDIDATE TABLE");
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
 			stmt.setString(1, candidate.getIdElection());
-			stmt.setString(2, candidate.getFullName());
+			stmt.setString(2, candidate.getFullname());
 			stmt.setDate(3, candidate.getBirthday());
 			stmt.setString(4, candidate.getAddress());
 			stmt.setString(5, candidate.getSummaryInfo());
@@ -194,7 +194,7 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 				Candidate candidate = new Candidate();
 				candidate.setId(rs.getInt("id"));
 				candidate.setIdElection(rs.getString("idElection"));
-				candidate.setFullName(rs.getString("fullname"));
+				candidate.setFullname(rs.getString("Fullname"));
 				candidate.setBirthday(rs.getDate("birthday"));
 				candidate.setAddress(rs.getString("address"));
 				candidate.setSummaryInfo(rs.getString("summaryInfo"));

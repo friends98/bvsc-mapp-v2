@@ -14,7 +14,7 @@ import lombok.Setter;
 public class CandidateRequest {
 	private Integer id;
 	private String idElection;
-	private String fullName;
+	private String fullname;
 	private Date birthday;
 	private String address;
 	private String summaryInfo;

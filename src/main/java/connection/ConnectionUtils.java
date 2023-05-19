@@ -17,13 +17,28 @@ public class ConnectionUtils {
 	private static ConnectionUtils instance = null;
 
 	public ConnectionUtils() {
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			conn = DriverManager.getConnection(url);
+			logger.info("DB connect successfully!");
+		} catch (Exception e) {
+			if (conn == null) {
+				logger.info("DB connect is failed,null poiter exception");
+			}
+			logger.error("Error:" + e.getMessage());
+			System.out.println(e.getMessage());
+		}
 	}
 
-	public static ConnectionUtils getInstance() {
+	public  static ConnectionUtils getInstance() throws SQLException {
 		if (instance == null) {
-			instance = new ConnectionUtils();
+			instance=new ConnectionUtils();
+		}else if(instance.getConnection().isClosed()) {
+			instance=new ConnectionUtils();
+			return instance;
 		}
 		return instance;
+		
 	}
 
 	// define info DB
@@ -38,19 +53,21 @@ public class ConnectionUtils {
 			+ ";user=" + username + ";password=" + password;
 	Connection conn = null;
 
-	public Connection getConnection() throws SQLException {
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			conn = DriverManager.getConnection(url);
-			logger.info("DB connect successfully!");
-		} catch (Exception e) {
-			if (conn == null) {
-				logger.info("DB connect is failed,null poiter exception");
-			}
-			logger.error("Error:" + e.getMessage());
-			System.out.println(e.getMessage());
-		}
+//	public  void init() throws SQLException {
+//		try {
+//			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//			conn = DriverManager.getConnection(url);
+//			logger.info("DB connect successfully!");
+//		} catch (Exception e) {
+//			if (conn == null) {
+//				logger.info("DB connect is failed,null poiter exception");
+//			}
+//			logger.error("Error:" + e.getMessage());
+//			System.out.println(e.getMessage());
+//		}
+//		//return conn;
+//	}
+	public Connection getConnection() {
 		return conn;
 	}
-
 }

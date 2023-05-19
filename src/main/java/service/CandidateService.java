@@ -2,6 +2,7 @@ package service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
@@ -18,6 +19,7 @@ import org.apache.log4j.Logger;
 
 import common.StatusCode;
 import dao.CandidateDao;
+import dao.daoimpl.CandidateDaoImpl;
 import model.ApiResponse;
 import model.entity.Candidate;
 import model.request.CandidateRequest;
@@ -28,6 +30,34 @@ public class CandidateService {
 	
 	@Inject
 	private CandidateDao<Candidate> candidateDaoImpl;
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{id}")
+	public Response candidateDetails(@PathParam("id") String id) {
+		logger.info("ID request: " + id);
+		try {
+			candidateDaoImpl = new CandidateDaoImpl();
+			Optional<Candidate> opCandidate = candidateDaoImpl.getById(id);
+			if (opCandidate.isEmpty()) {
+				return Response.ok(new ApiResponse(
+						StatusCode.DATA_FAILED.getValue(),
+						StatusCode.DATA_FAILED.getDescription(),
+						null)).build();
+			}
+			return Response.ok(new ApiResponse(
+					StatusCode.DATA_SUCCESS.getValue(),
+					StatusCode.DATA_SUCCESS.getDescription(),
+					opCandidate.get())).build();
+
+		} catch (Exception e) {
+			logger.error("ERROR : "+e.getMessage());
+			return Response.ok(new ApiResponse(
+					StatusCode.DATA_FAILED.getValue(),
+					StatusCode.DATA_FAILED.getDescription(),
+					null)).build();
+		}
+	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -78,7 +108,7 @@ public class CandidateService {
 		Candidate candidate = new Candidate();
 		try {
 			candidate.setIdElection(candidateReq.getIdElection());
-			candidate.setFullName(candidateReq.getFullName());
+			candidate.setFullname(candidateReq.getFullname());
 			candidate.setBirthday(candidateReq.getBirthday());
 			candidate.setAddress(candidateReq.getAddress());
 			candidate.setSummaryInfo(candidateReq.getSummaryInfo());
@@ -111,7 +141,7 @@ public class CandidateService {
 		try {
 			candidate.setId(id);
 			candidate.setIdElection(candidateReq.getIdElection());
-			candidate.setFullName(candidateReq.getFullName());
+			candidate.setFullname(candidateReq.getFullname());
 			candidate.setBirthday(candidateReq.getBirthday());
 			candidate.setAddress(candidateReq.getAddress());
 			candidate.setSummaryInfo(candidateReq.getSummaryInfo());
