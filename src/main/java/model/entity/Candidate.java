@@ -1,6 +1,6 @@
 package model.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,8 +12,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Candidate {
-	private String id;
-	private String meetingId;
+	private Integer id;
+	private String idElection;
 	private String fullName;
 	private Date birthday;
+	private String address;
+	private String summaryInfo;
 }

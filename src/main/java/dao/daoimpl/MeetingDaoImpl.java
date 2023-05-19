@@ -15,7 +15,6 @@ import connection.ConnectionUtils;
 import dao.MeetingDao;
 import model.entity.MeetingInfo;
 
-
 @Stateless
 public class MeetingDaoImpl implements MeetingDao<MeetingInfo> {
 private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
@@ -73,6 +72,7 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				MeetingInfo meetingInfo = new MeetingInfo();
+				meetingInfo.setId(id);
 				meetingInfo.setIdCompany(rs.getInt("idCompany"));
 				meetingInfo.setNameMeeting(rs.getString("nameMeeting"));
 				meetingInfo.setNumberOrganized(rs.getInt("numberOrganized"));
@@ -232,10 +232,8 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 				meetingInfo.setAddress(rs.getString("address"));
 				meetingInfos.add(meetingInfo);
 			}
-
 		} catch (Exception e) {
 			logger.error("ERROR GET DATA :"+e.getMessage());
-
 		} finally {
 			try {
 				stmt.close();
@@ -246,5 +244,28 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 		}
 		return  meetingInfos;
 	}
+	
+//    private static final String UPLOAD_FOLDER = "/bvsc-mapp-v2/resource/images"; // Thay đổi đường dẫn đến thư mục upload
+//
+//	@Override
+//	public ResponseEntity<String> uploadImage(MultipartFile imageFile) {
+//		try {
+//            // Tạo đường dẫn tới thư mục upload
+//            File uploadDir = new File(UPLOAD_FOLDER);
+//            if (!uploadDir.exists()) {
+//                uploadDir.mkdirs();
+//            }
+//
+//            // Lưu file vào thư mục upload
+//            String fileName = imageFile.getOriginalFilename();
+//            Path filePath = Path.of(UPLOAD_FOLDER, fileName);
+//            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+//
+//            return ResponseEntity.ok("Image uploaded successfully");
+//        } catch (IOException e) {
+//            // Xử lý exception nếu có lỗi trong quá trình xử lý ảnh
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image");
+//        }
+//	}
 
 }

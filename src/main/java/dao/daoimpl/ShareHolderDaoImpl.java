@@ -287,7 +287,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 			stmt = conn.prepareStatement(sql.toString());
 			stmt.setString(1, username);
 			stmt.setString(2, password);
-			ResultSet rs=stmt.executeQuery();
+			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				ShareHolder shareholder = new ShareHolder(
 						rs.getString("id"),

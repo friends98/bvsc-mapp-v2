@@ -34,4 +34,12 @@ public class Constants {
 	public static final Integer MEETING_INIT=0;
 	public static final Integer MEETTING_RUN=1;
 	public static final Integer MEETTING_END=2;
+	
+	public static final Integer BATCH_SIZE=20000;
+	
+	// status voting
+	public static final Integer APPROVED=1;
+	public static final Integer DISAPPROVED=2;
+	public static final Integer NO_COMMENT=0;
+	
 }

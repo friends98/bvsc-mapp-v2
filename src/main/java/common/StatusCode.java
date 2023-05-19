@@ -12,7 +12,9 @@ public enum StatusCode {
 	UPDATE_SUCCESS(1,"Update record successfully"),
 	UPDATE_FAILED(2,"Update record failed!"),
 	DELETE_SUCCESS(1,"Delete record successfully"),
-	DELETE_FAILED(2,"Delete record failed!")
+	DELETE_FAILED(2,"Delete record failed!"),
+	UPLOAD_SUCCESS(1,"Upload file success"),
+	UPLOAD_FAILED(2,"Upload file failed!")
 	;
 	
 	

@@ -13,5 +13,7 @@ public interface CommonDaoUpdate<T> {
 	Integer update(T t);
 
 	Integer delete(T t);
+	
+	
 
 }

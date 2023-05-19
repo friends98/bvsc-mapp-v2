@@ -86,10 +86,10 @@ public class MeetingService {
 	}
 	
 	@POST
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
+//	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addMeeting(MeetingInfoRequest meetingInfoReq){
-		String image64=fileUtils.uploadImage(meetingInfoReq.getImageBanner());
+//		String image64=fileUtils.uploadImage(meetingInfoReq.getImageBanner());
 
 		try {
 			MeetingInfo meetingInfo = new MeetingInfo();
@@ -98,7 +98,7 @@ public class MeetingService {
 			meetingInfo.setNumberOrganized(meetingInfoReq.getNumberOrganized());
 			meetingInfo.setYearOrganized(meetingInfoReq.getYearOrganized());
 			meetingInfo.setStatus(Constants.MEETING_INIT);
-			meetingInfo.setImageBanner(image64);
+			meetingInfo.setImageBanner(meetingInfoReq.getImageBanner());
 			meetingInfo.setStartTime(meetingInfoReq.getStartTime());
 			meetingInfo.setEndTime(meetingInfoReq.getEndTime());
 			meetingInfo.setAddress(meetingInfoReq.getAddress());
@@ -207,5 +207,18 @@ public class MeetingService {
 					.build();
 		}
 	}
+	
+//	@POST
+//    @Path("/upload-image")
+//    @Consumes(MediaType.MULTIPART_FORM_DATA)
+//    public Response uploadImage(@MultipartForm FormData formData) {
+//        try {
+//            Response response = meetingDaoImpl.uploadImage(formData.getImageFile());
+//            return response;
+//        } catch (Exception e) {
+//            // Xử lý exception nếu cần thiết
+//            return Response.serverError().build();
+//        }
+//    }
 
 }

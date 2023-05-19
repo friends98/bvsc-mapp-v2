@@ -34,11 +34,11 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 			while(rs.next()) {
 				Election election = new Election();
 				election.setId(rs.getString(1));
-				election.setIdCandidate(rs.getString(2));
+				election.setIdMeeting(rs.getInt(2));
 				election.setTitle(rs.getString(3));
 				election.setDescription(rs.getString(4));
-				election.setCreateTime(rs.getTimestamp(5));
-				election.setModifiTime(rs.getTimestamp(6));
+				election.setCreatedTime(rs.getDate(5));
+				election.setModifiedTime(rs.getDate(6));
 				elections.add(election);
 			}
 			
@@ -68,11 +68,11 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				election.setId(rs.getString(1));
-				election.setIdCandidate(rs.getString(2));
+				election.setIdMeeting(rs.getInt(2));
 				election.setTitle(rs.getString(3));
 				election.setDescription(rs.getString(4));
-				election.setCreateTime(rs.getTimestamp(5));
-				election.setModifiTime(rs.getTimestamp(6));
+				election.setCreatedTime(rs.getDate(5));
+				election.setModifiedTime(rs.getDate(6));
 				return Optional.of(election);
 
 			}
@@ -93,16 +93,16 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 	@Override
 	public Integer save(Election election) {
 		StringBuilder sql = new StringBuilder(
-				"INSERT INTO tblElection (idCandidate,title,description,createdTime)" 
+				"INSERT INTO tblElection (idMeeting,title,description,createdTime)" 
 			  + "VALUES(?,?,?,?)");
 		PreparedStatement stmt = null;
 		try {
 			conn=ConnectionUtils.getInstance().getConnection();
 			stmt=conn.prepareStatement(sql.toString());
-			stmt.setString(1, election.getIdCandidate());
+			stmt.setInt(1, election.getIdMeeting());
 			stmt.setString(2, election.getTitle());
 			stmt.setString(3, election.getDescription());
-			stmt.setTimestamp(4, election.getCreateTime());
+			stmt.setDate(4, election.getCreatedTime());
 			stmt.addBatch();
 			stmt.executeBatch();
 			return 1;
@@ -125,16 +125,16 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 	@Override
 	public Integer update(Election election) {
 		StringBuilder sql = new StringBuilder(
-				"UPDATE tblElection SET idCandidate=?, title=?, description=?, modifiedTime=? WHERE id=?");
+				"UPDATE tblElection SET idMeeting=?, title=?, description=?, modifiedTime=? WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
 			logger.info("UPDATE DATA ELECTION TABLE");
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
-			stmt.setString(1, election.getIdCandidate());
+			stmt.setInt(1, election.getIdMeeting());
 			stmt.setString(2, election.getTitle());
 			stmt.setString(3, election.getDescription());
-			stmt.setTimestamp(4, election.getModifiTime());
+			stmt.setDate(4, election.getModifiedTime());
 			stmt.setString(5, election.getId());
 			stmt.addBatch();
 			stmt.executeBatch();
@@ -180,6 +180,43 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 			}
 		}
 		
+	}
+
+	@Override
+	public List<Election> getByIdMeeting(Integer idMeeting) {
+		List<Election> elections = new ArrayList<Election>();
+		StringBuilder sql = new StringBuilder("SELECT * FROM tblElection WHERE idMeeting=? ORDER BY title ASC");
+		PreparedStatement stmt = null;
+		try {
+			logger.info("GET DATA FROM Election TABLE");
+			logger.info("Election INFO ID: "+idMeeting);
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setInt(1, idMeeting);
+			ResultSet rs=stmt.executeQuery();
+			while (rs.next()) {
+				Election election = new Election();
+				election.setId(rs.getString("id"));
+				election.setIdMeeting(rs.getInt("idMeeting"));
+				election.setTitle(rs.getString("title"));
+				election.setDescription(rs.getString("description"));
+				election.setCreatedTime(rs.getDate("createdTime"));
+				election.setModifiedTime(rs.getDate("modifiedTime"));
+				elections.add(election);
+			}
+
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA :"+e.getMessage());
+
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+		}
+		return  elections;
 	}
 
 }

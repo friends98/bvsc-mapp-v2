@@ -11,11 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ElectionRequest {
-	private String id;
-	private Integer idMeeting;
-	private String title;
-	private String description;
-	private Date createdTime;
-	private Date modifiedTime;
+public class CandidateRequest {
+	private Integer id;
+	private String idElection;
+	private String fullName;
+	private Date birthday;
+	private String address;
+	private String summaryInfo;
 }

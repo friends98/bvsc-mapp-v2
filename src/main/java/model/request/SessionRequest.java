@@ -11,11 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ElectionRequest {
-	private String id;
-	private Integer idMeeting;
-	private String title;
-	private String description;
-	private Date createdTime;
-	private Date modifiedTime;
+public class SessionRequest {
+	private String sessionId;
+	private String idShareholder;
+	private Date startTime;
+	private Date endTime;
+	private String ipAddress;
+	private String deviceType;
 }

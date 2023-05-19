@@ -1,6 +1,6 @@
 package service;
 
-import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -38,10 +38,10 @@ public class ElectionService {
 	public Response election(ElectionRequest electionReq) {
 		electionDao = new ElectionDaoImpl();
 		Election election = new Election();
-		election.setIdCandidate(electionReq.getIdCandidate());
+		election.setIdMeeting(electionReq.getIdMeeting());
 		election.setTitle(electionReq.getTitle());
 		election.setDescription(electionReq.getDescription());
-		election.setCreateTime(new Timestamp(System.currentTimeMillis()));
+		election.setCreatedTime(electionReq.getCreatedTime());
 		try {
 			int insert = electionDao.save(election);
 			if(insert==0) {
@@ -68,15 +68,15 @@ public class ElectionService {
 	
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("edit/{id}")
+	@Path("/{id}")
 	public Response updateElection(@PathParam("id")String id,ElectionRequest electionReq) {
 		electionDao = new ElectionDaoImpl();
 		Election election = new Election();
 		election.setId(id);
-		election.setIdCandidate(electionReq.getIdCandidate());
+		election.setIdMeeting(electionReq.getIdMeeting());
 		election.setTitle(electionReq.getTitle());
 		election.setDescription(electionReq.getDescription());
-		election.setModifiTime(new Timestamp(System.currentTimeMillis()));
+		election.setModifiedTime(electionReq.getModifiedTime());
 		try {
 			int edit=electionDao.update(election);
 			if(edit==0) {
@@ -101,7 +101,7 @@ public class ElectionService {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
+	@Path("/{id}")
 	public Response electionDetail(@PathParam("id")String id) {
 		electionDao = new ElectionDaoImpl();
 		try {
@@ -152,5 +152,25 @@ public class ElectionService {
 					null)).build();
 		}
 	}
-	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/allByMeeting/{idMeeting}")
+	public Response getAllByMeetingElection(@PathParam("idMeeting")Integer idMeeting) {
+		logger.info("Get All Election By Meetings");
+		try {
+			
+			List<Election> elections = electionDao.getByIdMeeting(idMeeting);
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_SUCCESS.getValue(),
+							StatusCode.DATA_SUCCESS.getDescription(), elections))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_FAILED.getValue(),
+							StatusCode.DATA_FAILED.getDescription(), null))
+					.build();
+		}
+	}
 }
