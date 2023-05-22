@@ -98,7 +98,7 @@ public class ShareHolderService {
 			shareholder.setNumberShares(shareholderRequest.getNumberShared());
 			shareholder.setNumberSharesAuth(shareholderRequest.getNumberAuthShared());
 			shareholder.setRole(shareholderRequest.getRole());
-			shareholder.setShareHolderCode(shareholderRequest.getShareHoldeCode());
+			shareholder.setShareHolderCode(shareholderRequest.getShareHolderCode());
 			int insert = shareHolderImpl.save(shareholder);
 			if(insert==0) {
 				return Response.ok(new ApiResponse(
@@ -138,7 +138,7 @@ public class ShareHolderService {
 			shareholder.setNumberShares(shareholderRequest.getNumberShared());
 			shareholder.setNumberSharesAuth(shareholderRequest.getNumberAuthShared());
 			shareholder.setRole(shareholderRequest.getRole());
-			shareholder.setShareHolderCode(shareholderRequest.getShareHoldeCode());
+			shareholder.setShareHolderCode(shareholderRequest.getShareHolderCode());
 			int edit = shareHolderImpl.update(shareholder);
 			if(edit==0) {
 				return Response.ok(new ApiResponse(
