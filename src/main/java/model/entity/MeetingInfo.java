@@ -16,7 +16,7 @@ public class MeetingInfo {
 	private Integer idCompany;
 	private String nameMeeting;
 	private Integer numberOrganized;
-	private Date yearOrganized;
+	private Integer yearOrganized;
 	private Integer status;
 	private String imageBanner;
 	private Date startTime;

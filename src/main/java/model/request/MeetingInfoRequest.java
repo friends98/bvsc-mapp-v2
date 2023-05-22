@@ -16,12 +16,10 @@ public class MeetingInfoRequest {
 	private Integer idCompany;
 	private String nameMeeting;
 	private Integer numberOrganized;
-	private Date yearOrganized;
+	private Integer yearOrganized;
 	private Integer status;
 	private String imageBanner;
-//	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone="Europe/Berlin")
 	private Date startTime;
-//	private String imagePath;
 	private Date endTime;
 	private String address;
 
