@@ -13,17 +13,9 @@ import org.apache.log4j.Logger;
  */
 @Stateless
 public class ConnectionUtils {
+	// singleton connection
 	private static ConnectionUtils instance = null;
-
-	public ConnectionUtils() {
-	}
-
-	public static ConnectionUtils getInstance() {
-		if (instance == null) {
-			instance = new ConnectionUtils();
-		}
-		return instance;
-	}
+	private Connection conn = null;
 
 	// define info DB
 	private static final Logger logger = Logger.getLogger(ConnectionUtils.class);
@@ -35,9 +27,7 @@ public class ConnectionUtils {
 
 	private static final String url = "jdbc:sqlserver://" + serverName + ":" + portNumber + ";database=" + databaseName
 			+ ";user=" + username + ";password=" + password;
-	Connection conn = null;
-
-	public Connection getConnection() throws SQLException {
+	public ConnectionUtils() {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			conn = DriverManager.getConnection(url);
@@ -49,6 +39,19 @@ public class ConnectionUtils {
 			logger.error("Error:" + e.getMessage());
 			System.out.println(e.getMessage());
 		}
+	}
+
+	public  static ConnectionUtils getInstance() throws SQLException {
+		if (instance == null) {
+			instance=new ConnectionUtils();
+		}else if(instance.getConnection().isClosed()) {
+			instance=new ConnectionUtils();
+			return instance;
+		}
+		return instance;
+	}
+
+	public Connection getConnection() {
 		return conn;
 	}
 

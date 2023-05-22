@@ -28,7 +28,7 @@ public class AdminDaoImpl implements AdminDao<Admin> {
 			stmt = conn.prepareStatement(sql.toString());
 			stmt.setString(1, username);
 			stmt.setString(2, password);
-			ResultSet rs=stmt.executeQuery();
+			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				Admin admin =new Admin(
 						rs.getString(1),

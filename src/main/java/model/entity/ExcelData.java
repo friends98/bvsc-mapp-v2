@@ -1,42 +1,49 @@
 package model.entity;
 
-import javax.ws.rs.FormParam;
+import java.io.InputStream;
 
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.core.MediaType;
+
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 public class ExcelData {
-	public ExcelData() {}
-
-	private byte [] data;
+	private InputStream ins;
 	private String fileName;
 	
+	public ExcelData() {}
+
+	/**
+	 * @return the ins
+	 */
+	public InputStream getIns() {
+		return ins;
+	}
+
+	/**
+	 * @param ins the ins to set
+	 */
+	@FormParam("file")
+    @PartType(MediaType.APPLICATION_OCTET_STREAM)
+
+	public void setIns(InputStream ins) {
+		this.ins = ins;
+	}
+
 	/**
 	 * @return the fileName
 	 */
 	public String getFileName() {
 		return fileName;
 	}
+
 	/**
 	 * @param fileName the fileName to set
 	 */
-	@FormDataParam("filename")
+	@FormParam("fileName")
+    @PartType(MediaType.TEXT_PLAIN)
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
-	}
-	/**
-	 * @return the data
-	 */
-	public byte[] getData() {
-		return data;
-	}
-	/**
-	 * @param data the data to set
-	 */
-	@FormParam("file")
-	@PartType("application/octet-stream")
-	public void setData(byte[] data) {
-		this.data = data;
 	}
 
 }
