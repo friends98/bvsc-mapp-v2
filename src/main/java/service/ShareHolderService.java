@@ -59,6 +59,34 @@ public class ShareHolderService {
 					null)).build();
 		}
 	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("getByIC/{identityCard}")
+	public Response shareholderDetailsByIdentityCard(@PathParam("identityCard") String identityCard) {
+		logger.info("IdentityCard request: " + identityCard);
+		try {
+			shareHolderImpl = new ShareHolderDaoImpl();
+			Optional<ShareHolder> opShareHolder = shareHolderImpl.getByIdentityCard(identityCard);
+			if (opShareHolder.isEmpty()) {
+				return Response.ok(new ApiResponse(
+						StatusCode.DATA_FAILED.getValue(),
+						StatusCode.DATA_FAILED.getDescription(),
+						null)).build();
+			}
+			return Response.ok(new ApiResponse(
+					StatusCode.DATA_SUCCESS.getValue(),
+					StatusCode.DATA_SUCCESS.getDescription(),
+					opShareHolder.get())).build();
+
+		} catch (Exception e) {
+			logger.error("ERROR : "+e.getMessage());
+			return Response.ok(new ApiResponse(
+					StatusCode.DATA_FAILED.getValue(),
+					StatusCode.DATA_FAILED.getDescription(),
+					null)).build();
+		}
+	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

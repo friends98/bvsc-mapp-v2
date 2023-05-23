@@ -321,4 +321,51 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 		return Optional.empty();
 	}
 
+	@Override
+	public Optional<ShareHolder> getByIdentityCard(String identityCard) {
+		StringBuilder sql = new StringBuilder("SELECT * FROM tblShareholder WHERE identityCard=?");
+		PreparedStatement stmt = null;
+		ShareHolder shareHolder = new ShareHolder();
+		try {
+			logger.info("GET DATA FROM SHAREHOLDER TABLE");
+			logger.info("SHARE HOLDER INFO IdentityCard: "+identityCard);
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, identityCard);
+			ResultSet rs=stmt.executeQuery();
+			while(rs.next()) {
+				shareHolder.setId(rs.getString("id"));
+				shareHolder.setFullname(rs.getString("fullname"));
+				shareHolder.setShareHolderCode(rs.getString("shareHolderCode"));
+				shareHolder.setIdentityCard(rs.getString("identityCard"));
+				shareHolder.setEmail(rs.getString("email"));
+				shareHolder.setPhoneNumber(rs.getString("phoneNumber"));
+				shareHolder.setAddress(rs.getString("address"));
+				shareHolder.setNationality(rs.getString("nationality"));
+				shareHolder.setUsername(rs.getString("username"));
+				shareHolder.setPassword(rs.getString("password"));
+				shareHolder.setIdMeeting(rs.getInt("idMeeting"));
+				shareHolder.setStatus(rs.getInt("status"));
+				shareHolder.setNumberShares(rs.getInt("numberShares"));
+				shareHolder.setNumberSharesAuth(rs.getInt("numberSharesAuth"));
+				shareHolder.setRole(rs.getInt("role"));
+				
+				return Optional.of(shareHolder);
+			}
+
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA :"+e.getMessage());
+			return Optional.empty();
+
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+		}
+		return  Optional.empty();
+	}
+
 }

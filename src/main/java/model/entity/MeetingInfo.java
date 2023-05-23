@@ -1,6 +1,6 @@
 package model.entity;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class MeetingInfo {
 	private Integer yearOrganized;
 	private Integer status;
 	private String imageBanner;
-	private Date startTime;
-	private Date endTime;
+	private Timestamp startTime;
+	private Timestamp endTime;
 	private String address;
 }

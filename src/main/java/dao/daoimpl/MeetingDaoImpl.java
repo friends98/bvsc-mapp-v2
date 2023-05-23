@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +40,8 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 				meeting.setYearOrganized(rs.getInt("yearOrganized"));
 				meeting.setStatus(rs.getInt("status"));
 				meeting.setImageBanner(rs.getString("imageBanner"));
-				meeting.setStartTime(rs.getDate("startTime"));
-				meeting.setEndTime(rs.getDate("endTime"));
+				meeting.setStartTime(rs.getTimestamp("startTime"));
+				meeting.setEndTime(rs.getTimestamp("endTime"));
 				meeting.setAddress(rs.getString("address"));
 				meetings.add(meeting);
 			}
@@ -79,8 +80,8 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 				meetingInfo.setYearOrganized(rs.getInt("yearOrganized"));
 				meetingInfo.setStatus(rs.getInt("status"));
 				meetingInfo.setImageBanner(rs.getString("imageBanner"));
-				meetingInfo.setStartTime(rs.getDate("startTime"));
-				meetingInfo.setEndTime(rs.getDate("endTime"));
+				meetingInfo.setStartTime(rs.getTimestamp("startTime"));
+				meetingInfo.setEndTime(rs.getTimestamp("endTime"));
 				meetingInfo.setAddress(rs.getString("address"));
 				return Optional.of(meetingInfo);
 			}
@@ -104,9 +105,6 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 				+ "INSERT INTO tblMeeting (idCompany,nameMeeting,numberOrganized,yearOrganized,status,imageBanner,"
 				+ "startTime,endTime,address) VALUES(?,?,?,?,?,?,?,?,?)");
 		PreparedStatement stmt = null;
-//		String imageBytes = meetingInfo.getImageBanner();
-//		byte[] bytes = Base64.getDecoder().decode(imageBytes); 
-//		String imageBase64 = Base64.getEncoder().encodeToString(bytes);
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt = conn.prepareStatement(sql.toString());
@@ -116,8 +114,16 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 			stmt.setInt(4, meetingInfo.getYearOrganized());
 			stmt.setInt(5, meetingInfo.getStatus());
 			stmt.setString(6, meetingInfo.getImageBanner());
-			stmt.setDate(7, meetingInfo.getStartTime());
-			stmt.setDate(8, meetingInfo.getEndTime());
+			 // Đặt múi giờ cho startTime
+	        Calendar startTimeCalendar = Calendar.getInstance();
+	        startTimeCalendar.setTime(meetingInfo.getStartTime());
+	        stmt.setTimestamp(7, new java.sql.Timestamp(startTimeCalendar.getTimeInMillis()), startTimeCalendar);
+
+	        // Đặt múi giờ cho endTime
+	        Calendar endTimeCalendar = Calendar.getInstance();
+	        endTimeCalendar.setTime(meetingInfo.getEndTime());
+	        stmt.setTimestamp(8, new java.sql.Timestamp(endTimeCalendar.getTimeInMillis()), endTimeCalendar);
+	        
 			stmt.setString(9, meetingInfo.getAddress());
 			stmt.addBatch();
 			stmt.executeBatch();
@@ -152,8 +158,8 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 			stmt.setInt(4, meetingInfo.getYearOrganized());
 			stmt.setInt(5, meetingInfo.getStatus());
 			stmt.setString(6, meetingInfo.getImageBanner());
-			stmt.setDate(7, meetingInfo.getStartTime());
-			stmt.setDate(8, meetingInfo.getEndTime());
+			stmt.setTimestamp(7, meetingInfo.getStartTime());
+			stmt.setTimestamp(8, meetingInfo.getEndTime());
 			stmt.setString(9, meetingInfo.getAddress());
 			stmt.setInt(10, meetingInfo.getId());
 			stmt.addBatch();
@@ -227,8 +233,8 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 				meetingInfo.setYearOrganized(rs.getInt("yearOrganized"));
 				meetingInfo.setStatus(rs.getInt("status"));
 				meetingInfo.setImageBanner(rs.getString("imageBanner"));
-				meetingInfo.setStartTime(rs.getDate("startTime"));
-				meetingInfo.setEndTime(rs.getDate("endTime"));
+				meetingInfo.setStartTime(rs.getTimestamp("startTime"));
+				meetingInfo.setEndTime(rs.getTimestamp("endTime"));
 				meetingInfo.setAddress(rs.getString("address"));
 				meetingInfos.add(meetingInfo);
 			}
