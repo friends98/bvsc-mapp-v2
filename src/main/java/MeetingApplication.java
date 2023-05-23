@@ -31,8 +31,9 @@ public class MeetingApplication extends Application{
 		setUrl.add(SessionService.class);
 		setUrl.add(MeetingResultService.class);
 		setUrl.add(CandidateService.class);
-		setUrl.add(TransactionService.class);
 		setUrl.add(CORSFilter.class);
+		setUrl.add(TransactionService.class);
+
 		return setUrl;
 	}
 }

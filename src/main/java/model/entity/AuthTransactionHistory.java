@@ -1,6 +1,5 @@
 package model.entity;
 
-import java.math.BigInteger;
 import java.sql.Date;
 
 import lombok.AllArgsConstructor;

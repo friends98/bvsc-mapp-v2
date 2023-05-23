@@ -16,44 +16,24 @@ public class TransactionDao {
 	private static final Logger logger = Logger.getLogger(TransactionDao.class.getName());
 	private Connection conn;
 	
-	
-	
-	@SuppressWarnings("resource")
 	public Integer createTransactionShared(AuthTransactionHistory authTransactionHistory) {
-		StringBuilder sqlFrom = new StringBuilder("UPDATE tblShareholder SET numberShares=numberShares-? WHERE id=? ");
-		StringBuilder sqlTo = new StringBuilder("UPDATE tblShareholder SET numberSharesAuth=numberSharesAuth+? "
-				+ "WHERE id=?");
+		
 		StringBuilder sqlTransHistory = new StringBuilder("INSERT INTO tblAuth_Transaction_History "
 				+ "(idShareholder,idShareholderAuth,amount,createdAt,updatedAt) VALUES(?,?,?,?,?)");
 		PreparedStatement stmt = null;
-		int resultUpdateFrom,resultUpdateTo,resultInsertTrans=0;
 	
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
 			conn.setAutoCommit(false);
-			stmt = conn.prepareStatement(sqlFrom.toString());
-			stmt.setInt(1,authTransactionHistory.getAmount());
-			stmt.setString(2, authTransactionHistory.getIdShareholder());
-			resultUpdateFrom=stmt.executeUpdate();
 			
-			stmt = conn.prepareStatement(sqlTo.toString());
-			stmt.setInt(1, authTransactionHistory.getAmount());
-			stmt.setString(2, authTransactionHistory.getIdShareholderAuth());
-			resultUpdateTo=stmt.executeUpdate();
-			
-			if(resultUpdateFrom==0||resultUpdateTo==0) {
-				conn.rollback();
-				logger.info("Transaction Failed!");
-				return 0;
-			}
 			stmt=conn.prepareStatement(sqlTransHistory.toString());
 			stmt.setString(1, authTransactionHistory.getIdShareholder());
 			stmt.setString(2, authTransactionHistory.getIdShareholderAuth());
 			stmt.setInt(3, authTransactionHistory.getAmount());
 			stmt.setDate(4, authTransactionHistory.getCreatedAt());
-			stmt.setDate(resultUpdateTo, authTransactionHistory.getUpdatedAt());
-			
-			resultInsertTrans=stmt.executeUpdate();
+			stmt.setDate(5, authTransactionHistory.getUpdatedAt());
+			//stmt.addBatch();
+			int resultInsertTrans=stmt.executeUpdate();
 			if(resultInsertTrans==0) {
 				conn.rollback();
 				logger.info("Insert transaction history failed!");
@@ -65,9 +45,7 @@ public class TransactionDao {
 		} catch (Exception e) {
 			try {
 				conn.rollback();
-				
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			return 0;
@@ -81,7 +59,5 @@ public class TransactionDao {
 				return 0;
 			}
 		}
-		
 	}
-	
 }
