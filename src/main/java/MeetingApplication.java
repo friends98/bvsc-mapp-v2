@@ -14,6 +14,7 @@ import service.MeetingResultService;
 import service.MeetingService;
 import service.SessionService;
 import service.ShareHolderService;
+import service.TransactionService;
 import service.VotingService;
 @ApplicationPath("api/v1")
 public class MeetingApplication extends Application{
@@ -31,6 +32,8 @@ public class MeetingApplication extends Application{
 		setUrl.add(MeetingResultService.class);
 		setUrl.add(CandidateService.class);
 		setUrl.add(CORSFilter.class);
+		setUrl.add(TransactionService.class);
+
 		return setUrl;
 	}
 }

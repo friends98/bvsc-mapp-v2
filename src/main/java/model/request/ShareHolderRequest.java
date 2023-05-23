@@ -26,7 +26,7 @@ public class ShareHolderRequest {
 	private Integer numberShared;
 	private Integer numberAuthShared;
 	private Integer role;
-	private String shareHoldeCode;
+	private String shareHolderCode;
 	
 
 }
