@@ -16,16 +16,15 @@ public class SessionDao {
 	Connection conn ;
 	
 	public Integer insertSession(Session session) {
-		StringBuilder sql = new StringBuilder("INSERT INTO tblSession(idShareholder,startTime,ipAddress,deviceType) VALUES(?,?,?,?)");
+		StringBuilder sql = new StringBuilder("INSERT INTO tblSession(idShareholder,ipAddress,deviceType) VALUES(?,?,?)");
 		PreparedStatement stmt = null;
 		try {
 			logger.info("INSERT TABLE SESSION");
 			conn = ConnectionUtils.getInstance().getConnection();
 			stmt=conn.prepareStatement(sql.toString());
 			stmt.setString(1, session.getIdShareholder());
-			stmt.setDate(2, session.getStartTime());
-			stmt.setString(3, session.getIpAddress());
-			stmt.setString(4, session.getDeviceType());
+			stmt.setString(2, session.getIpAddress());
+			stmt.setString(3, session.getDeviceType());
 			stmt.addBatch();
 			stmt.executeBatch();
 			return 1;

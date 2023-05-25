@@ -1,4 +1,4 @@
-package model.entity;
+package model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ResultVoting {
-	private Integer id;
-	private String idVoting;
+public class AuthTransactionRequest {
+
 	private String idShareholder;
-	private Integer status;
+	private String idShareholderAuth;
+	private Integer amount;
+	
 }

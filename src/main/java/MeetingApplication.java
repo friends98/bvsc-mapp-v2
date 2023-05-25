@@ -10,8 +10,12 @@ import service.AuthService;
 import service.CandidateService;
 import service.CompanyService;
 import service.ElectionService;
+import service.FileService;
+import service.MeetingResultService;
 import service.MeetingService;
+import service.SessionService;
 import service.ShareHolderService;
+import service.TransactionService;
 import service.VotingService;
 @ApplicationPath("api/v1")
 public class MeetingApplication extends Application{
@@ -27,7 +31,10 @@ public class MeetingApplication extends Application{
 		setUrl.add(CORSFilter.class);
 		setUrl.add(ShareHolderService.class);
 		setUrl.add(MeetingService.class);
-
+		setUrl.add(MeetingResultService.class);
+		setUrl.add(TransactionService.class);
+		setUrl.add(SessionService.class);
+		setUrl.add(FileService.class);
 		return setUrl;
 	}
 }

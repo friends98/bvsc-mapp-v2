@@ -1,6 +1,6 @@
 package model.entity;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-
-public class ResultElection {
-	private Integer id;
-	private String idCandidate;
+public class AuthTransactionHistory {
+	private String id;
 	private String idShareholder;
-	private Integer numberSharesForCandidate;
-	private Timestamp timeElection;
+	private String idShareholderAuth;
+	private Integer amount;
+	private Date createdAt;
+	private Date updatedAt;
+
 }

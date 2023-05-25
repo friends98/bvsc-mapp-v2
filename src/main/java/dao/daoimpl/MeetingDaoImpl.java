@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,16 +113,8 @@ private static Logger logger=Logger.getLogger(MeetingDaoImpl.class.getName());
 			stmt.setInt(4, meetingInfo.getYearOrganized());
 			stmt.setInt(5, meetingInfo.getStatus());
 			stmt.setString(6, meetingInfo.getImageBanner());
-			 // Đặt múi giờ cho startTime
-	        Calendar startTimeCalendar = Calendar.getInstance();
-	        startTimeCalendar.setTime(meetingInfo.getStartTime());
-	        stmt.setTimestamp(7, new java.sql.Timestamp(startTimeCalendar.getTimeInMillis()), startTimeCalendar);
-
-	        // Đặt múi giờ cho endTime
-	        Calendar endTimeCalendar = Calendar.getInstance();
-	        endTimeCalendar.setTime(meetingInfo.getEndTime());
-	        stmt.setTimestamp(8, new java.sql.Timestamp(endTimeCalendar.getTimeInMillis()), endTimeCalendar);
-	        
+			stmt.setTimestamp(7, meetingInfo.getStartTime());
+			stmt.setTimestamp(8, meetingInfo.getEndTime());
 			stmt.setString(9, meetingInfo.getAddress());
 			stmt.addBatch();
 			stmt.executeBatch();

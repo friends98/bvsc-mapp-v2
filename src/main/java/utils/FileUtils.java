@@ -1,44 +1,40 @@
 package utils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
 
 import org.apache.log4j.Logger;
-import java.util.Iterator;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import model.entity.ShareHolder;
 
-
 @Stateless
 public class FileUtils {
-private static final Logger logger = Logger.getLogger(FileUtils.class);
+	private static final Logger logger = Logger.getLogger(FileUtils.class);
 	
-	
-	public  List<ShareHolder> readExcelFile(String filePath){
-		long start=System.currentTimeMillis();
-		
-		File fileExcel = new File(filePath);
+	public  List<ShareHolder> readExcelFile(InputStream ins){
+		//File fileExcel = new File(ins);
 		List<ShareHolder> listData =new ArrayList<>();
 		try {
-			FileInputStream fis = new FileInputStream(fileExcel);
-			XSSFWorkbook workbook = new XSSFWorkbook(fis);
-			XSSFSheet sheet = workbook.getSheetAt(0);
+			@SuppressWarnings("resource")
+			Workbook workbook = new XSSFWorkbook(ins);
+			Sheet sheet = workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.rowIterator();
-			int rowNumber =0;
-			while(rowIterator.hasNext()) {
+			int rowNumber = 0;
+			while (rowIterator.hasNext()) {
 				Row row = rowIterator.next();
-				if(rowNumber==0) {
+				if (rowNumber == 0) {
 					rowNumber++;
 					continue;
 				}
@@ -90,21 +86,19 @@ private static final Logger logger = Logger.getLogger(FileUtils.class);
 				listData.add(shareholder);
 				rowNumber++;
 			}
-			long end =System.currentTimeMillis();
-			fis.close();
-			logger.info("Time : "+(end-start));
+			//fis.close();
+			workbook.close();
 		} catch (Exception e) {
 			logger.error("ERROR READ FILE EXCEL : "+e.getMessage());
 		}
 		return listData;
 	}
-
 	
-	public String uploadImage(String fileInputStream) {
+	public String uploadImage(String filePath) {
 		try {
-			byte[] fileContent = org.apache.commons.io.FileUtils.readFileToByteArray(new File(fileInputStream));
+			byte[] fileContent = org.apache.commons.io.FileUtils.readFileToByteArray(new File(filePath));
 			String encodedString = Base64.getEncoder().encodeToString(fileContent);
-			logger.info("encode: "+encodedString);
+			//logger.info("encode: " + encodedString);
 			return encodedString;
 		} catch (IOException e) {
 			
@@ -112,5 +106,6 @@ private static final Logger logger = Logger.getLogger(FileUtils.class);
 			return null;
 		}
 	}
+	
 
 }

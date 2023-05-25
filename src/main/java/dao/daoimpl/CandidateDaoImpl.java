@@ -214,4 +214,31 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 		return candidates;
 	}
 
+	@Override
+	public Integer deleteByIdElection(Candidate t) {
+		StringBuilder sql = new StringBuilder("DELETE FROM tblCandidate WHERE idElection=?");
+		PreparedStatement stmt = null;
+		try {
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, t.getIdElection());
+			int rowDel = stmt.executeUpdate();
+			if(rowDel>0) {
+				return 1;
+			}
+			return 0;
+		} catch (Exception e) {
+			logger.error("ERROR DELETE DATA Candidate BY ID  Election: "+e.getMessage());
+			return 0;
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+				return 0;
+			}
+		}
+	}
+
 }

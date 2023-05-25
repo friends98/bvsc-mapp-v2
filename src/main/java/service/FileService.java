@@ -1,9 +1,10 @@
 package service;
 
+import java.util.Base64;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -11,10 +12,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import common.StatusCode;
 import dao.FileDao;
 import model.ApiResponse;
+import model.entity.ExcelData;
+import model.entity.ImageData;
 import model.entity.ShareHolder;
 import utils.FileUtils;
 @Path("")
@@ -26,17 +30,18 @@ public class FileService {
 	
 	@Inject
 	private FileUtils fileUtils;
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("upload-shardholder")
-	public Response upload() {
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Path("upload-excel")
+	public Response excel(@MultipartForm ExcelData data) {
 		try {
-			String file ="C:/Users/it-admin/Downloads/bvsc.xlsx";
-			
 			long start =System.currentTimeMillis();
-			List<ShareHolder> shareholders =fileUtils.readExcelFile(file);
+			logger.info(data.getIdMeeting());
+			List<ShareHolder> shareholders =fileUtils.readExcelFile(data.getIns());
 			logger.info("Time out: "+(System.currentTimeMillis()-start));
-			int upload=fileDao.upload(shareholders);
+			int upload=fileDao.upload(shareholders,data.getIdMeeting());
 			if(upload==0) {
 				return Response.ok(new ApiResponse(
 						StatusCode.UPLOAD_FAILED.getValue(),
@@ -45,8 +50,7 @@ public class FileService {
 
 			return Response.ok(new ApiResponse(
 					StatusCode.UPLOAD_SUCCESS.getValue(),
-					StatusCode.UPLOAD_SUCCESS.getDescription(), null)).build();
-			
+					StatusCode.UPLOAD_SUCCESS.getDescription(), shareholders)).build();
 		} catch (Exception e) {
 			logger.error("ERROR : "+e.getMessage());
 			return Response.ok(new ApiResponse(
@@ -55,15 +59,16 @@ public class FileService {
 		}
 	}
 	
-	@GET
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Path("upload-img")
-	public Response uploadImage() {
-		String file ="C:/Users/it-admin/Pictures/oto.jpg";
-		String image =fileUtils.uploadImage(file);
+	public Response uploadImage(@MultipartForm ImageData imageData) {
+		
+		String imageBase64 = Base64.getEncoder().encodeToString(imageData.getData());
 		return Response.ok(new ApiResponse(
 				StatusCode.UPLOAD_SUCCESS.getValue(),
-				StatusCode.UPLOAD_SUCCESS.getDescription(), image)).build();
+				StatusCode.UPLOAD_SUCCESS.getDescription(), imageBase64)).build();
 	}
 
 }

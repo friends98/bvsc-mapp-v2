@@ -31,7 +31,6 @@ public class SessionService {
 			session.setIdShareholder(sessionReq.getIdShareholder());
 			session.setIpAddress(sessionReq.getIpAddress());
 			session.setDeviceType(sessionReq.getDeviceType());
-			session.setStartTime(sessionReq.getStartTime());
 			int insert = sessionDao.insertSession(session);
 			if(insert==0) {
 				return Response.ok(new ApiResponse(

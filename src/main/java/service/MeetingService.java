@@ -28,9 +28,6 @@ import model.request.MeetingInfoRequest;
 public class MeetingService {
 	private static final Logger logger = Logger.getLogger(MeetingService.class.getName());
 	
-	@Inject
-	private utils.FileUtils fileUtils;
-	
 	@Inject 
 	private MeetingDao<MeetingInfo> meetingDaoImpl;
 	
@@ -85,10 +82,8 @@ public class MeetingService {
 	}
 	
 	@POST
-//	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addMeeting(MeetingInfoRequest meetingInfoReq){
-//		String image64=fileUtils.uploadImage(meetingInfoReq.getImageBanner());
 
 		try {
 			MeetingInfo meetingInfo = new MeetingInfo();
@@ -135,7 +130,7 @@ public class MeetingService {
 		meetingInfo.setStatus(meetingInfoReq.getStatus());
 		meetingInfo.setImageBanner(meetingInfoReq.getImageBanner());
 		meetingInfo.setStartTime(meetingInfoReq.getStartTime());
-		meetingInfo.setEndTime(meetingInfoReq.getStartTime());
+		meetingInfo.setEndTime(meetingInfoReq.getEndTime());
 		meetingInfo.setAddress(meetingInfoReq.getAddress());
 		try {
 			int edit = meetingDaoImpl.update(meetingInfo);

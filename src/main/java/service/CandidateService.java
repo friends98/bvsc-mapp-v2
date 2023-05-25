@@ -192,4 +192,31 @@ public class CandidateService {
 		}
 	}
 	
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("delete-by-id-election/{idElection}")
+	public Response deleteCandidateByIdElection(@PathParam("idElection")String idElection) {
+		Candidate candidate = new Candidate();
+		try {
+			candidate.setIdElection(idElection);
+			int delete=candidateDaoImpl.deleteByIdElection(candidate);
+			if(delete==0) {
+				return Response.ok(new ApiResponse(
+						StatusCode.DELETE_FAILED.getValue(),
+						StatusCode.DELETE_FAILED.getDescription(),
+						null)).build();
+			}
+			return Response.ok(new ApiResponse(
+					StatusCode.DELETE_SUCCESS.getValue(),
+					StatusCode.DELETE_SUCCESS.getDescription(),
+					null)).build();
+		} catch (Exception e) {
+			logger.error("ERROR : "+e.getMessage());
+			return Response.ok(new ApiResponse(
+					StatusCode.DELETE_FAILED.getValue(),
+					StatusCode.DELETE_FAILED.getDescription(),
+					null)).build();
+		}
+	}
+	
 }
