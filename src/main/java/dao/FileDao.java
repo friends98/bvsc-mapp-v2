@@ -81,7 +81,7 @@ public class FileDao {
 //	}
 //	
 	
-	public int upload(List<ShareHolder> list) throws SQLException {
+	public int upload(List<ShareHolder> list,Integer idMeeting) throws SQLException {
 		
 		StringBuilder sql = new StringBuilder("INSERT INTO tblShareholder "
 				+ "(fullname,identityCard,email,address,phoneNumber,nationality,username,password,idMeeting,status,"
@@ -108,7 +108,7 @@ public class FileDao {
 				stmt.setString(6, shareHolder.getNationality());
 				stmt.setString(7, shareHolder.getUsername());
 				stmt.setString(8, "xxxxxxx");
-				stmt.setInt(9, 1);
+				stmt.setInt(9, idMeeting);
 				stmt.setInt(10, 0);
 				stmt.setInt(11, shareHolder.getNumberShares());
 				stmt.setInt(12, shareHolder.getNumberSharesAuth());

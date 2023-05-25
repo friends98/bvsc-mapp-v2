@@ -9,7 +9,7 @@ import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 public class ExcelData {
 	private InputStream ins;
-	private String fileName;
+	private Integer idMeeting;
 	
 	public ExcelData() {}
 
@@ -33,17 +33,17 @@ public class ExcelData {
 	/**
 	 * @return the fileName
 	 */
-	public String getFileName() {
-		return fileName;
+	public Integer getIdMeeting() {
+		return idMeeting;
 	}
 
 	/**
 	 * @param fileName the fileName to set
 	 */
-	@FormParam("fileName")
+	@FormParam("idMeeting")
     @PartType(MediaType.TEXT_PLAIN)
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFileName(Integer idMeeting) {
+		this.idMeeting = idMeeting;
 	}
 
 }

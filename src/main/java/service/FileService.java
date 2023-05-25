@@ -16,6 +16,7 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import common.StatusCode;
 import dao.FileDao;
+import jakarta.ws.rs.PathParam;
 import model.ApiResponse;
 import model.entity.ExcelData;
 import model.entity.ImageData;
@@ -36,12 +37,13 @@ public class FileService {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Path("upload-excel")
 	public Response excel(@MultipartForm ExcelData data) {
+	
 		try {
 			long start =System.currentTimeMillis();
-			logger.info(data.getFileName());
+//			logger.info(data.getFileName());
 			List<ShareHolder> shareholders =fileUtils.readExcelFile(data.getIns());
 			logger.info("Time out: "+(System.currentTimeMillis()-start));
-			int upload=fileDao.upload(shareholders);
+			int upload=fileDao.upload(shareholders,data.getIdMeeting());
 			if(upload==0) {
 				return Response.ok(new ApiResponse(
 						StatusCode.UPLOAD_FAILED.getValue(),
