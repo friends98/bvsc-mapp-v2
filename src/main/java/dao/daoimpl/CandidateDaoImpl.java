@@ -33,7 +33,7 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 				Candidate candidate = new Candidate();
 				candidate.setId(rs.getInt("id"));
 				candidate.setIdElection(rs.getString("idElection"));
-				candidate.setFullname(rs.getString("Fullname"));
+				candidate.setFullname(rs.getString("fullname"));
 				candidate.setBirthday(rs.getDate("birthday"));
 				candidate.setAddress(rs.getString("address"));
 				candidate.setSummaryInfo(rs.getString("summaryInfo"));
@@ -67,7 +67,7 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 			while(rs.next()) {
 				candidate.setId(rs.getInt("id"));
 				candidate.setIdElection(rs.getString("idElection"));
-				candidate.setFullname(rs.getString("Fullname"));
+				candidate.setFullname(rs.getString("fullname"));
 				candidate.setBirthday(rs.getDate("birthday"));
 				candidate.setAddress(rs.getString("address"));
 				candidate.setSummaryInfo(rs.getString("summaryInfo"));
@@ -194,7 +194,7 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 				Candidate candidate = new Candidate();
 				candidate.setId(rs.getInt("id"));
 				candidate.setIdElection(rs.getString("idElection"));
-				candidate.setFullname(rs.getString("Fullname"));
+				candidate.setFullname(rs.getString("fullname"));
 				candidate.setBirthday(rs.getDate("birthday"));
 				candidate.setAddress(rs.getString("address"));
 				candidate.setSummaryInfo(rs.getString("summaryInfo"));
@@ -239,6 +239,41 @@ public class CandidateDaoImpl implements CandidateDao<Candidate> {
 				return 0;
 			}
 		}
+	}
+
+	@Override
+	public List<Candidate> getCandidateByMeeting(Integer idMeeting) {
+		List<Candidate> candidates = new ArrayList<>();
+		StringBuilder sql = new StringBuilder("SELECT c.* FROM tblCandidate c JOIN tblElection e ON c.idElection = e.id WHERE e.idMeeting = ?");
+		PreparedStatement stmt = null;
+		try {
+			logger.info("GET DATA TABLE CANDIDATE BY ELECTION");
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setInt(1, idMeeting);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				Candidate candidate = new Candidate();
+				candidate.setId(rs.getInt("id"));
+				candidate.setIdElection(rs.getString("idElection"));
+				candidate.setFullname(rs.getString("fullname"));
+				candidate.setBirthday(rs.getDate("birthday"));
+				candidate.setAddress(rs.getString("address"));
+				candidate.setSummaryInfo(rs.getString("summaryInfo"));
+				candidates.add(candidate);
+				
+			}
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA : "+e.getMessage());
+		}finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+		}
+		return candidates;
 	}
 
 }

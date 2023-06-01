@@ -77,6 +77,27 @@ public class MeetingResultService {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	@Path("get-result-voting-by-meeting/{idMeeting}")
+	public Response getResultVotingByMeeting(@PathParam("idMeeting")Integer idMeeting) {
+		try {
+			
+			List<ResultVoting> resultVotings = meetingResultDao.getResultVotingByMeeting(idMeeting);
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_SUCCESS.getValue(),
+							StatusCode.DATA_SUCCESS.getDescription(), resultVotings))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_FAILED.getValue(),
+							StatusCode.DATA_FAILED.getDescription(), null))
+					.build();
+		}
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/all-result-voting")
 	public Response getAllResultVoting() {
 		logger.info("Get All Result Voting");
@@ -164,6 +185,27 @@ public class MeetingResultService {
 					.build();
 		}
 
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("get-result-election-by-meeting/{idMeeting}")
+	public Response getResultElectionByMeeting(@PathParam("idMeeting")Integer idMeeting) {
+		try {
+			
+			List<ResultElection> resultElections = meetingResultDao.getResultElectionByMeeting(idMeeting);
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_SUCCESS.getValue(),
+							StatusCode.DATA_SUCCESS.getDescription(), resultElections))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_FAILED.getValue(),
+							StatusCode.DATA_FAILED.getDescription(), null))
+					.build();
+		}
 	}
 	
 	@PUT

@@ -218,5 +218,24 @@ public class CandidateService {
 					null)).build();
 		}
 	}
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("get-candidate-by-meeting/{idMeeting}")
+	public Response getCandidateByMeeting(@PathParam("idMeeting")Integer idMeeting) {
+		List<Candidate> candidates = new ArrayList<>();
+		try {
+			candidates = candidateDaoImpl.getCandidateByMeeting(idMeeting);
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_SUCCESS.getValue(),
+							StatusCode.DATA_SUCCESS.getDescription(), candidates))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(new ApiResponse(
+					StatusCode.DATA_FAILED.getValue(),
+					StatusCode.DATA_FAILED.getDescription(), null))
+			.build();
+		}
+	}
 	
 }
