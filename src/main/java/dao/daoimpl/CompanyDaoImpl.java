@@ -38,7 +38,7 @@ public class CompanyDaoImpl implements CompanyDao<CompanyInfo>{
 				companyInfo.setStockCode(rs.getString("stockCode"));
 				companyInfo.setTaxCode(rs.getInt("taxCode"));
 				companyInfo.setAddress(rs.getString("address"));
-				companyInfo.setFoundYear(rs.getDate("foundedYear"));
+				companyInfo.setFoundedYear(rs.getTimestamp("foundedYear"));
 				companys.add(companyInfo);
 			}
 			
@@ -48,7 +48,7 @@ public class CompanyDaoImpl implements CompanyDao<CompanyInfo>{
 		}finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -74,7 +74,7 @@ public class CompanyDaoImpl implements CompanyDao<CompanyInfo>{
 				companyInfo.setStockCode(rs.getString("stockCode"));
 				companyInfo.setTaxCode(rs.getInt("taxCode"));
 				companyInfo.setAddress(rs.getString("address"));
-				companyInfo.setFoundYear(rs.getDate("foundedYear"));
+				companyInfo.setFoundedYear(rs.getTimestamp("foundedYear"));
 				return Optional.of(companyInfo);
 			}
 		} catch (Exception e) {
@@ -83,7 +83,7 @@ public class CompanyDaoImpl implements CompanyDao<CompanyInfo>{
 		}finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -102,7 +102,7 @@ public class CompanyDaoImpl implements CompanyDao<CompanyInfo>{
 			stmt.setString(2, companyInfo.getStockCode());
 			stmt.setInt(3, companyInfo.getTaxCode());
 			stmt.setString(4, companyInfo.getAddress());
-			stmt.setDate(5, companyInfo.getFoundYear());
+			stmt.setTimestamp(5, companyInfo.getFoundedYear());
 			stmt.addBatch();
 			stmt.executeBatch();
 			return 1;
@@ -133,7 +133,7 @@ public class CompanyDaoImpl implements CompanyDao<CompanyInfo>{
 			stmt.setString(2, companyInfo.getStockCode());
 			stmt.setInt(3, companyInfo.getTaxCode());
 			stmt.setString(4, companyInfo.getAddress());
-			stmt.setDate(5, companyInfo.getFoundYear());
+			stmt.setTimestamp(5, companyInfo.getFoundedYear());
 			stmt.setInt(6, companyInfo.getId());
 			stmt.addBatch();
 			stmt.executeBatch();

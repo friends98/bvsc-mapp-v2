@@ -78,7 +78,7 @@ public class MeetingResultDao {
 		} finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -111,7 +111,7 @@ public class MeetingResultDao {
 		} finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -144,7 +144,7 @@ public class MeetingResultDao {
 		}finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -242,7 +242,7 @@ public class MeetingResultDao {
 		} finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -306,7 +306,7 @@ public class MeetingResultDao {
 		} finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -339,7 +339,7 @@ public class MeetingResultDao {
 		}finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}

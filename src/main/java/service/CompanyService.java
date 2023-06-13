@@ -91,7 +91,7 @@ public class CompanyService {
 			companyInfo.setStockCode(companyRequest.getStockCode());
 			companyInfo.setTaxCode(companyRequest.getTaxCode());
 			companyInfo.setAddress(companyRequest.getAddress());
-			companyInfo.setFoundYear(companyRequest.getFoundYear());
+			companyInfo.setFoundedYear(companyRequest.getFoundedYear());
 			int insert = companyDaoImpl.save(companyInfo);
 			if(insert==0) {
 				return Response.ok(new ApiResponse(
@@ -122,7 +122,7 @@ public class CompanyService {
 			companyInfo.setStockCode(companyRequest.getStockCode());
 			companyInfo.setTaxCode(companyRequest.getTaxCode());
 			companyInfo.setAddress(companyRequest.getAddress());
-			companyInfo.setFoundYear(companyRequest.getFoundYear());
+			companyInfo.setFoundedYear(companyRequest.getFoundedYear());
 			int edit = companyDaoImpl.update(companyInfo);
 			if(edit==0) {
 				return Response.ok(new ApiResponse(

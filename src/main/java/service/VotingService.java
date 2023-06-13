@@ -96,6 +96,7 @@ public class VotingService {
 			voting.setContent(votingReq.getContent());
 			voting.setCreatedTime(votingReq.getCreatedTime());
 			voting.setModifiedTime(votingReq.getModifiedTime());
+
 			voting.setId(id);
 			
 			int edit = votingImpl.update(voting);

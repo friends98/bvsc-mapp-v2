@@ -10,6 +10,7 @@ import service.AuthService;
 import service.CandidateService;
 import service.CompanyService;
 import service.ElectionService;
+import service.FeedbackService;
 import service.FileService;
 import service.MeetingResultService;
 import service.MeetingService;
@@ -35,6 +36,7 @@ public class MeetingApplication extends Application{
 		setUrl.add(TransactionService.class);
 		setUrl.add(SessionService.class);
 		setUrl.add(FileService.class);
+		setUrl.add(FeedbackService.class);
 		return setUrl;
 	}
 }

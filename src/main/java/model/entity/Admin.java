@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 public class Admin {
 	private String id;
-	private Integer idCompany;
 	private String username;
 	private String password;
+	private Integer role;
 
 }

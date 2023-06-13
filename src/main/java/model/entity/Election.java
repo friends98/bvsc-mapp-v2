@@ -15,6 +15,8 @@ public class Election {
 	private Integer idMeeting;
 	private String title;
 	private String description;
+	private Integer numberOfElected;
 	private Date createdTime;
 	private Date modifiedTime;
+	private Integer status;
 }

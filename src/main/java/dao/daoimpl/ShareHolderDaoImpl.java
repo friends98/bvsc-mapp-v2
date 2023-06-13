@@ -60,7 +60,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 		}finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -102,15 +102,17 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 			}
 
 		} catch (Exception e) {
-			logger.error("ERROR GET DATA :"+e.getMessage());
+			logger.error("ERROR GET DATA GET BY ID:"+e.getMessage());
 			return Optional.empty();
 
 		} finally {
-			try {
-				stmt.close();
-				conn.close();
-			} catch (Exception e2) {
-				logger.error(e2.getMessage());
+			if(conn!=null && stmt != null) {
+				try {
+					stmt.close();
+//					conn.close();
+				} catch (Exception e2) {
+					logger.error(e2.getMessage());
+				}
 			}
 		}
 		return  Optional.empty();
@@ -269,7 +271,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 		} finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -313,7 +315,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 		}finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.warn(e2.getMessage());
 			}
@@ -360,7 +362,7 @@ public class ShareHolderDaoImpl implements ShareHolderDao<ShareHolder>{
 		} finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}

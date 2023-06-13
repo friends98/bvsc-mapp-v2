@@ -1,6 +1,5 @@
 package model.entity;
 
-
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
@@ -12,13 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CompanyInfo {
+public class Feedback {
 	private Integer id;
-	private String companyName;
-	private String stockCode;
-	private Integer taxCode;
-	private String address;
-	private Timestamp foundedYear;
-	
-	
+    private String idShareholder;
+    private String content;
+    private Timestamp timeFeedback;
 }

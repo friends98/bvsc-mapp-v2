@@ -96,6 +96,7 @@ public class MeetingService {
 			meetingInfo.setStartTime(meetingInfoReq.getStartTime());
 			meetingInfo.setEndTime(meetingInfoReq.getEndTime());
 			meetingInfo.setAddress(meetingInfoReq.getAddress());
+			meetingInfo.setDescription(meetingInfoReq.getDescription());
 			int insert = meetingDaoImpl.save(meetingInfo);
 			
 			if(insert==0) {
@@ -132,6 +133,7 @@ public class MeetingService {
 		meetingInfo.setStartTime(meetingInfoReq.getStartTime());
 		meetingInfo.setEndTime(meetingInfoReq.getEndTime());
 		meetingInfo.setAddress(meetingInfoReq.getAddress());
+		meetingInfo.setDescription(meetingInfoReq.getDescription());
 		try {
 			int edit = meetingDaoImpl.update(meetingInfo);
 			if(edit==0) {
@@ -201,18 +203,5 @@ public class MeetingService {
 					.build();
 		}
 	}
-	
-//	@POST
-//    @Path("/upload-image")
-//    @Consumes(MediaType.MULTIPART_FORM_DATA)
-//    public Response uploadImage(@MultipartForm FormData formData) {
-//        try {
-//            Response response = meetingDaoImpl.uploadImage(formData.getImageFile());
-//            return response;
-//        } catch (Exception e) {
-//            // Xử lý exception nếu cần thiết
-//            return Response.serverError().build();
-//        }
-//    }
 
 }

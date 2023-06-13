@@ -41,7 +41,10 @@ public class ElectionService {
 		election.setIdMeeting(electionReq.getIdMeeting());
 		election.setTitle(electionReq.getTitle());
 		election.setDescription(electionReq.getDescription());
+		election.setNumberOfElected(electionReq.getNumberOfElected());
 		election.setCreatedTime(electionReq.getCreatedTime());
+		election.setStatus(electionReq.getStatus());
+
 		try {
 			int insert = electionDao.save(election);
 			if(insert==0) {
@@ -76,7 +79,10 @@ public class ElectionService {
 		election.setIdMeeting(electionReq.getIdMeeting());
 		election.setTitle(electionReq.getTitle());
 		election.setDescription(electionReq.getDescription());
+		election.setNumberOfElected(electionReq.getNumberOfElected());
 		election.setModifiedTime(electionReq.getModifiedTime());
+		election.setStatus(electionReq.getStatus());
+
 		try {
 			int edit=electionDao.update(election);
 			if(edit==0) {

@@ -12,18 +12,18 @@ public class AdminAuthResponse implements Serializable {
 	private String username;
 	private String token;
 	private long exp;
-	private Integer idCompany;
+	private Integer role;
 	
 	public AdminAuthResponse() {
 	}
 	
-	public AdminAuthResponse(String id, String username, String token, long exp, Integer idCompany) {
+	public AdminAuthResponse(String id, String username, String token, long exp, Integer role) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.token = token;
 		this.exp = exp;
-		this.idCompany = idCompany;
+		this.role = role;
 	}
 
 	

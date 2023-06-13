@@ -22,5 +22,5 @@ public class MeetingInfoRequest {
 	private Timestamp startTime;
 	private Timestamp endTime;
 	private String address;
-
+	private String description;
 }

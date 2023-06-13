@@ -37,8 +37,11 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 				election.setIdMeeting(rs.getInt(2));
 				election.setTitle(rs.getString(3));
 				election.setDescription(rs.getString(4));
-				election.setCreatedTime(rs.getDate(5));
-				election.setModifiedTime(rs.getDate(6));
+				election.setNumberOfElected(rs.getInt(5));
+				election.setCreatedTime(rs.getDate(6));
+				election.setModifiedTime(rs.getDate(7));
+				election.setStatus(rs.getInt(8));
+
 				elections.add(election);
 			}
 			
@@ -47,7 +50,7 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 		}finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -71,8 +74,11 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 				election.setIdMeeting(rs.getInt(2));
 				election.setTitle(rs.getString(3));
 				election.setDescription(rs.getString(4));
-				election.setCreatedTime(rs.getDate(5));
-				election.setModifiedTime(rs.getDate(6));
+				election.setNumberOfElected(rs.getInt(5));
+				election.setCreatedTime(rs.getDate(6));
+				election.setModifiedTime(rs.getDate(7));
+				election.setStatus(rs.getInt(8));
+
 				return Optional.of(election);
 
 			}
@@ -83,7 +89,7 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 		}finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
@@ -93,8 +99,8 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 	@Override
 	public Integer save(Election election) {
 		StringBuilder sql = new StringBuilder(
-				"INSERT INTO tblElection (idMeeting,title,description,createdTime)" 
-			  + "VALUES(?,?,?,?)");
+				"INSERT INTO tblElection (idMeeting,title,description,numberOfElected,createdTime,status)" 
+			  + "VALUES(?,?,?,?,?,?)");
 		PreparedStatement stmt = null;
 		try {
 			conn=ConnectionUtils.getInstance().getConnection();
@@ -102,7 +108,11 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 			stmt.setInt(1, election.getIdMeeting());
 			stmt.setString(2, election.getTitle());
 			stmt.setString(3, election.getDescription());
-			stmt.setDate(4, election.getCreatedTime());
+			stmt.setInt(4, election.getNumberOfElected());
+			stmt.setDate(5, election.getCreatedTime());
+			stmt.setInt(6, election.getStatus());
+
+
 			stmt.addBatch();
 			stmt.executeBatch();
 			return 1;
@@ -125,7 +135,7 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 	@Override
 	public Integer update(Election election) {
 		StringBuilder sql = new StringBuilder(
-				"UPDATE tblElection SET idMeeting=?, title=?, description=?, modifiedTime=? WHERE id=?");
+				"UPDATE tblElection SET idMeeting=?, title=?, description=?,numberOfElected=?, modifiedTime=?, status=? WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
 			logger.info("UPDATE DATA ELECTION TABLE");
@@ -134,8 +144,10 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 			stmt.setInt(1, election.getIdMeeting());
 			stmt.setString(2, election.getTitle());
 			stmt.setString(3, election.getDescription());
-			stmt.setDate(4, election.getModifiedTime());
-			stmt.setString(5, election.getId());
+			stmt.setInt(4, election.getNumberOfElected());
+			stmt.setDate(5, election.getModifiedTime());
+			stmt.setInt(6, election.getStatus());
+			stmt.setString(7, election.getId());
 			stmt.addBatch();
 			stmt.executeBatch();
 			return 1;
@@ -200,8 +212,11 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 				election.setIdMeeting(rs.getInt("idMeeting"));
 				election.setTitle(rs.getString("title"));
 				election.setDescription(rs.getString("description"));
+				election.setNumberOfElected(rs.getInt("numberOfElected"));
 				election.setCreatedTime(rs.getDate("createdTime"));
 				election.setModifiedTime(rs.getDate("modifiedTime"));
+				election.setStatus(rs.getInt("status"));
+
 				elections.add(election);
 			}
 
@@ -211,7 +226,7 @@ public class ElectionDaoImpl implements ElectionDao<Election> {
 		} finally {
 			try {
 				stmt.close();
-				conn.close();
+//				conn.close();
 			} catch (Exception e2) {
 				logger.error(e2.getMessage());
 			}
