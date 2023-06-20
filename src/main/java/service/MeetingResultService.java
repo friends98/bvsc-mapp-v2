@@ -208,6 +208,27 @@ public class MeetingResultService {
 		}
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("get-result-election-by-election/{idElection}")
+	public Response getResultElectionByElection(@PathParam("idElection")String idElection) {
+		try {
+			
+			List<ResultElection> resultElections = meetingResultDao.getResultElectionByElection(idElection);
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_SUCCESS.getValue(),
+							StatusCode.DATA_SUCCESS.getDescription(), resultElections))
+					.build();
+		} catch (Exception e) {
+			return Response.ok(
+					new ApiResponse(
+							StatusCode.DATA_FAILED.getValue(),
+							StatusCode.DATA_FAILED.getDescription(), null))
+					.build();
+		}
+	}
+	
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("voting/edit/{id}")

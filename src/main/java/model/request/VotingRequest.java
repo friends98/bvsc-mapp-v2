@@ -16,4 +16,5 @@ public class VotingRequest {
 	private String content;
 	private Date createdTime;
 	private Date modifiedTime;
+	private Integer status;
 }

@@ -63,6 +63,7 @@ public class VotingService {
 			voting.setIdMeeting(votingReq.getIdMeeting());
 			voting.setContent(votingReq.getContent());
 			voting.setCreatedTime(votingReq.getCreatedTime());
+			voting.setStatus(votingReq.getStatus());
 					
 			int insert = votingImpl.save(voting);
 			if(insert==0) {
@@ -96,7 +97,7 @@ public class VotingService {
 			voting.setContent(votingReq.getContent());
 			voting.setCreatedTime(votingReq.getCreatedTime());
 			voting.setModifiedTime(votingReq.getModifiedTime());
-
+			voting.setStatus(votingReq.getStatus());
 			voting.setId(id);
 			
 			int edit = votingImpl.update(voting);

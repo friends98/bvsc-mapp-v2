@@ -250,6 +250,40 @@ public class MeetingResultDao {
 		return  resultElections;
 	}
 	
+	public List<ResultElection> getResultElectionByElection(String idElection) {
+		List<ResultElection> resultElections = new ArrayList<ResultElection>();
+		StringBuilder sql = new StringBuilder("SELECT re.* FROM tblResult_Election re JOIN tblCandidate c ON re.idCandidate = c.id WHERE c.idElection = ?");
+		PreparedStatement stmt = null;
+		try {
+			logger.info("GET DATA FROM Meeting TABLE");
+			logger.info("IDMEETING INFO ID: "+idElection);
+			conn = ConnectionUtils.getInstance().getConnection();
+			stmt = conn.prepareStatement(sql.toString());
+			stmt.setString(1, idElection);
+			ResultSet rs=stmt.executeQuery();
+			while (rs.next()) {
+				ResultElection resultElection = new ResultElection();
+				resultElection.setId(rs.getInt("id"));
+				resultElection.setIdCandidate(rs.getString("idCandidate"));
+				resultElection.setIdShareholder(rs.getString("idShareholder"));
+				resultElection.setNumberSharesForCandidate(rs.getInt("numberSharesForCandidate"));
+				resultElection.setTimeElection(rs.getTimestamp("timeElection"));
+
+				resultElections.add(resultElection);
+			}
+		} catch (Exception e) {
+			logger.error("ERROR GET DATA :"+e.getMessage());
+		} finally {
+			try {
+				stmt.close();
+//				conn.close();
+			} catch (Exception e2) {
+				logger.error(e2.getMessage());
+			}
+		}
+		return  resultElections;
+	}
+	
 	public Integer updateShareHolderElection(List<ResultElection> resultElections) {
 		StringBuilder sql = new StringBuilder("UPDATE tblResult_Election SET numberSharesForCandidate=? WHERE id=?");
 		PreparedStatement stmt = null;

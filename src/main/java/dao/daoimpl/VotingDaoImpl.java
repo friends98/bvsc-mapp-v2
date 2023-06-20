@@ -38,7 +38,8 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 						rs.getInt(2),
 						rs.getString(3),
 						rs.getDate(4),
-						rs.getDate(5));
+						rs.getDate(5),
+						rs.getInt(6));
 				votings.add(voting);
 			}
 		} catch (Exception e) {
@@ -71,6 +72,7 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 				voting.setContent(rs.getString("content"));
 				voting.setCreatedTime(rs.getDate("createdTime"));
 				voting.setModifiedTime(rs.getDate("modifiedTime"));
+				voting.setStatus(rs.getInt("status"));
 				return Optional.of(voting);
 			}
 		} catch (Exception e) {
@@ -90,7 +92,7 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 	@Override
 	public Integer save(Voting voting) {
 		StringBuilder sql = new StringBuilder(
-				"INSERT INTO tblVoting (idMeeting,content,createdTime)" + "VALUES(?,?,?)");
+				"INSERT INTO tblVoting (idMeeting,content,createdTime,status)" + "VALUES(?,?,?,?)");
 		PreparedStatement stmt = null;
 		try {
 			logger.info("INSERT DATA VOTING TABLE");
@@ -100,6 +102,7 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 			stmt.setInt(1, voting.getIdMeeting());
 			stmt.setString(2, voting.getContent());
 			stmt.setDate(3, voting.getCreatedTime());
+			stmt.setInt(4, voting.getStatus());
 			stmt.addBatch();
 			stmt.executeBatch();
 			return 1;
@@ -120,7 +123,7 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 
 	@Override
 	public Integer update(Voting voting) {
-		StringBuilder sql = new StringBuilder("UPDATE tblVoting SET idMeeting=?, content=?,createdTime=?, modifiedTime=? WHERE id=?");
+		StringBuilder sql = new StringBuilder("UPDATE tblVoting SET idMeeting=?, content=?,createdTime=?, modifiedTime=?, status=? WHERE id=?");
 		PreparedStatement stmt = null;
 		try {
 			conn = ConnectionUtils.getInstance().getConnection();
@@ -129,7 +132,8 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 			stmt.setString(2, voting.getContent());
 			stmt.setDate(3,voting.getCreatedTime());
 			stmt.setDate(4,voting.getModifiedTime());
-			stmt.setString(5,voting.getId());
+			stmt.setInt(5,voting.getStatus());
+			stmt.setString(6,voting.getId());
 			
 			stmt.addBatch();
 			stmt.executeBatch();
@@ -196,6 +200,7 @@ public class VotingDaoImpl implements VotingDao<Voting> {
 				voting.setContent(rs.getString("content"));
 				voting.setCreatedTime(rs.getDate("createdTime"));
 				voting.setModifiedTime(rs.getDate("modifiedTime"));
+				voting.setStatus(rs.getInt("status"));
 				votings.add(voting);
 			}
 
